@@ -21,7 +21,7 @@ const handler = NextAuth({
         }
 
         try {
-          const url = "https://api.korasaude.com.br/api"
+          const url = process.env.NEXT_PUBLIC_API_URL
           const response = await fetch(`${url}auth/login`, {
             method: "POST",
             body: JSON.stringify({
