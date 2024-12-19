@@ -3,10 +3,11 @@ import axios, { AxiosInstance } from "axios";
 
 
 
-export const api = (): AxiosInstance => {;
+export const api = (): AxiosInstance => {
+  const url = process.env.NEXT_PUBLIC_API_URL
 
   const instance = axios.create({
-    baseURL: "http://10.27.254.153:3793/",
+    baseURL: url,
     headers: {
       "Content-Type": "application/json",
     },

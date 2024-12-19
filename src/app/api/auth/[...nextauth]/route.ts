@@ -21,7 +21,8 @@ const handler = NextAuth({
         }
 
         try {
-          const response = await fetch("http://10.27.254.153:3793/auth/login", {
+          const url = process.env.NEXT_PUBLIC_API_URL
+          const response = await fetch(`${url}auth/login`, {
             method: "POST",
             body: JSON.stringify({
               username: credentials.username,
