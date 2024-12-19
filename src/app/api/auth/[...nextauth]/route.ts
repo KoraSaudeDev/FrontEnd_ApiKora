@@ -21,7 +21,7 @@ const handler = NextAuth({
         }
 
         try {
-          const url = "http://10.27.254.153:81/"
+          const url = "https://api.korasaude.com.br/api/"
           const response = await fetch(`${url}auth/login`, {
             method: "POST",
             body: JSON.stringify({
