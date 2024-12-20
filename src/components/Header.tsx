@@ -1,8 +1,6 @@
 import { IoReorderThreeOutline } from "react-icons/io5";
 import { IoMdExit } from "react-icons/io";
 import { signOut } from "next-auth/react";
-import { IoSettingsOutline } from "react-icons/io5";
-import Link from "next/link";
 
 type HeaderProps = {
   openSidebar: boolean;
