@@ -131,37 +131,37 @@ export default async function Verzo() {
         </ul>
         <h3 className="font-medium text-lg">Rotas MV</h3>
         <ul className="pl-2 my-4">
-          <li>/verzo/MV/sigla_hospital/ATENDIME</li>
-          <li>/verzo/MV/sigla_hospital/CONFIG_UNIDADE</li>
-          <li>/verzo/MV/sigla_hospital/CONVENIO</li>
-          <li>/verzo/MV/sigla_hospital/EMPRESA_CON_PLA</li>
-          <li>/verzo/MV/sigla_hospital/EMPRESA_PRODUTO</li>
-          <li>/verzo/MV/sigla_hospital/ENT_PRO</li>
-          <li>/verzo/MV/sigla_hospital/ESPECIE</li>
-          <li>/verzo/MV/sigla_hospital/ESTOQUE</li>
-          <li>/verzo/MV/sigla_hospital/GRU_PRO</li>
-          <li>/verzo/MV/sigla_hospital/GRUPO_UNIDADE</li>
-          <li>/verzo/MV/sigla_hospital/IMP_BRA</li>
-          <li>/verzo/MV/sigla_hospital/ITREG_FAT</li>
-          <li>/verzo/MV/sigla_hospital/ITREGRA</li>
-          <li>/verzo/MV/sigla_hospital/LAB_PRO</li>
-          <li>/verzo/MV/sigla_hospital/LOTE</li>
-          <li>/verzo/MV/sigla_hospital/MULTI_EMPRESAS</li>
-          <li>/verzo/MV/sigla_hospital/MVTO_ESTOQUE</li>
-          <li>/verzo/MV/sigla_hospital/PRO_FAT</li>
-          <li>/verzo/MV/sigla_hospital/PRODUTO</li>
-          <li>/verzo/MV/sigla_hospital/REG_AMB</li>
-          <li>/verzo/MV/sigla_hospital/REG_FAT</li>
-          <li>/verzo/MV/sigla_hospital/REGRA_LANCAMENTO</li>
-          <li>/verzo/MV/sigla_hospital/REGRA_SUBSTITUICAO_PROCED</li>
-          <li>/verzo/MV/sigla_hospital/SETOR</li>
-          <li>/verzo/MV/sigla_hospital/TAB_CONVENIO</li>
-          <li>/verzo/MV/sigla_hospital/TAB_FAT</li>
-          <li>/verzo/MV/sigla_hospital/TIP_DOC</li>
-          <li>/verzo/MV/sigla_hospital/TUSS_OM</li>
-          <li>/verzo/MV/sigla_hospital/TUSS</li>
-          <li>/verzo/MV/sigla_hospital/UNI_PRO</li>
-          <li>/verzo/MV/sigla_hospital/VAL_PRO</li>
+          <li>/api/verzo/MV/sigla_hospital/ATENDIME</li>
+          <li>/api/verzo/MV/sigla_hospital/CONFIG_UNIDADE</li>
+          <li>/api/verzo/MV/sigla_hospital/CONVENIO</li>
+          <li>/api/verzo/MV/sigla_hospital/EMPRESA_CON_PLA</li>
+          <li>/api/verzo/MV/sigla_hospital/EMPRESA_PRODUTO</li>
+          <li>/api/verzo/MV/sigla_hospital/ENT_PRO</li>
+          <li>/api/verzo/MV/sigla_hospital/ESPECIE</li>
+          <li>/api/verzo/MV/sigla_hospital/ESTOQUE</li>
+          <li>/api/verzo/MV/sigla_hospital/GRU_PRO</li>
+          <li>/api/verzo/MV/sigla_hospital/GRUPO_UNIDADE</li>
+          <li>/api/verzo/MV/sigla_hospital/IMP_BRA</li>
+          <li>/api/verzo/MV/sigla_hospital/ITREG_FAT</li>
+          <li>/api/verzo/MV/sigla_hospital/ITREGRA</li>
+          <li>/api/verzo/MV/sigla_hospital/LAB_PRO</li>
+          <li>/api/verzo/MV/sigla_hospital/LOTE</li>
+          <li>/api/verzo/MV/sigla_hospital/MULTI_EMPRESAS</li>
+          <li>/api/verzo/MV/sigla_hospital/MVTO_ESTOQUE</li>
+          <li>/api/verzo/MV/sigla_hospital/PRO_FAT</li>
+          <li>/api/verzo/MV/sigla_hospital/PRODUTO</li>
+          <li>/api/verzo/MV/sigla_hospital/REG_AMB</li>
+          <li>/api/verzo/MV/sigla_hospital/REG_FAT</li>
+          <li>/api/verzo/MV/sigla_hospital/REGRA_LANCAMENTO</li>
+          <li>/api/verzo/MV/sigla_hospital/REGRA_SUBSTITUICAO_PROCED</li>
+          <li>/api/verzo/MV/sigla_hospital/SETOR</li>
+          <li>/api/verzo/MV/sigla_hospital/TAB_CONVENIO</li>
+          <li>/api/verzo/MV/sigla_hospital/TAB_FAT</li>
+          <li>/api/verzo/MV/sigla_hospital/TIP_DOC</li>
+          <li>/api/verzo/MV/sigla_hospital/TUSS_OM</li>
+          <li>/api/verzo/MV/sigla_hospital/TUSS</li>
+          <li>/api/verzo/MV/sigla_hospital/UNI_PRO</li>
+          <li>/api/verzo/MV/sigla_hospital/VAL_PRO</li>
         </ul>
       </section>
       <section id="tasy" className="pt-2">
@@ -193,42 +193,42 @@ export default async function Verzo() {
         </ul>
         <h3 className="font-medium text-lg">Rotas TASY</h3>
         <ul className="pl-2 my-4">
-          <li>/verzo/TASY/sigla_hospital/BRASINDICE_PRECO</li>
-          <li>/verzo/TASY/sigla_hospital/CATEGORIA_CONVENIO</li>
-          <li>/verzo/TASY/sigla_hospital/CLASSE_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/CONTA_PACIENTE</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO_AMB</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO_BRASINDICE</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO_ESTABELECIMENTO</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO_PRECO_MAT</li>
-          <li>/verzo/TASY/sigla_hospital/CONVENIO_SIMPRO</li>
-          <li>/verzo/TASY/sigla_hospital/CONVERSAO_MATERIAL_CONVENIO</li>
-          <li>/verzo/TASY/sigla_hospital/ESTABELECIMENTO</li>
-          <li>/verzo/TASY/sigla_hospital/GRUPO_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/KIT_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_ATEND_PACIENTE</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_BRASINDICE</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_CONVERSAO_UNIDADE</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_ESTAB</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_REGRA_QT_FAT</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_SIMPRO</li>
-          <li>/verzo/TASY/sigla_hospital/MATERIAL_TUSS</li>
-          <li>/verzo/TASY/sigla_hospital/MEDIC_FICHA_TECNICA</li>
-          <li>/verzo/TASY/sigla_hospital/NATUREZA_OPERACAO</li>
-          <li>/verzo/TASY/sigla_hospital/NOTA_FISCAL</li>
-          <li>/verzo/TASY/sigla_hospital/NOTA_FISCAL_ITEM</li>
-          <li>/verzo/TASY/sigla_hospital/OPERACAO_NOTA</li>
-          <li>/verzo/TASY/sigla_hospital/PARAMETRO_FATURAMENTO</li>
-          <li>/verzo/TASY/sigla_hospital/PRECO_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/REGRA_BRASINDICE_PRECO</li>
-          <li>/verzo/TASY/sigla_hospital/REGRA_CONVENIO_PLANO</li>
-          <li>/verzo/TASY/sigla_hospital/SALDO_ESTOQUE</li>
-          <li>/verzo/TASY/sigla_hospital/SIMPRO_PRECO</li>
-          <li>/verzo/TASY/sigla_hospital/SUBGRUPO_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/TABELA_PRECO_MATERIAL</li>
-          <li>/verzo/TASY/sigla_hospital/TISS_TIPO_TABELA</li>
+          <li>/api/verzo/TASY/sigla_hospital/BRASINDICE_PRECO</li>
+          <li>/api/verzo/TASY/sigla_hospital/CATEGORIA_CONVENIO</li>
+          <li>/api/verzo/TASY/sigla_hospital/CLASSE_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONTA_PACIENTE</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO_AMB</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO_BRASINDICE</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO_ESTABELECIMENTO</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO_PRECO_MAT</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVENIO_SIMPRO</li>
+          <li>/api/verzo/TASY/sigla_hospital/CONVERSAO_MATERIAL_CONVENIO</li>
+          <li>/api/verzo/TASY/sigla_hospital/ESTABELECIMENTO</li>
+          <li>/api/verzo/TASY/sigla_hospital/GRUPO_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/KIT_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_ATEND_PACIENTE</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_BRASINDICE</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_CONVERSAO_UNIDADE</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_ESTAB</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_REGRA_QT_FAT</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_SIMPRO</li>
+          <li>/api/verzo/TASY/sigla_hospital/MATERIAL_TUSS</li>
+          <li>/api/verzo/TASY/sigla_hospital/MEDIC_FICHA_TECNICA</li>
+          <li>/api/verzo/TASY/sigla_hospital/NATUREZA_OPERACAO</li>
+          <li>/api/verzo/TASY/sigla_hospital/NOTA_FISCAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/NOTA_FISCAL_ITEM</li>
+          <li>/api/verzo/TASY/sigla_hospital/OPERACAO_NOTA</li>
+          <li>/api/verzo/TASY/sigla_hospital/PARAMETRO_FATURAMENTO</li>
+          <li>/api/verzo/TASY/sigla_hospital/PRECO_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/REGRA_BRASINDICE_PRECO</li>
+          <li>/api/verzo/TASY/sigla_hospital/REGRA_CONVENIO_PLANO</li>
+          <li>/api/verzo/TASY/sigla_hospital/SALDO_ESTOQUE</li>
+          <li>/api/verzo/TASY/sigla_hospital/SIMPRO_PRECO</li>
+          <li>/api/verzo/TASY/sigla_hospital/SUBGRUPO_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/TABELA_PRECO_MATERIAL</li>
+          <li>/api/verzo/TASY/sigla_hospital/TISS_TIPO_TABELA</li>
         </ul>
       </section>
     </main>
