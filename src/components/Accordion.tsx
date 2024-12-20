@@ -5,7 +5,6 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useEffect, useState } from "react";
 
 type AccordinProps = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   items: any;
 };
 
