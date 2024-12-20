@@ -1,14 +1,21 @@
 import { IoReorderThreeOutline } from "react-icons/io5";
-import { IoMdExit } from "react-icons/io";
-import { signOut } from "next-auth/react";
+// import { IoMdExit } from "react-icons/io";
+// import { cookies } from 'next/headers';
+// import { redirect } from 'next/navigation'; 
 
 type HeaderProps = {
   openSidebar: boolean;
   onChangeOpenSidebar: () => void;
 };
 
-export default function Header(props: HeaderProps) {
+export default  function Header(props: HeaderProps) {
   const { openSidebar, onChangeOpenSidebar } = props;
+  // const cookieStore = cookies();
+
+  // const handleSignOut = async () => {
+  //   (await cookieStore).delete('user');
+  //   redirect("redirect")
+  // }
   return (
     <header
       className={`${
@@ -22,13 +29,13 @@ export default function Header(props: HeaderProps) {
       />
 
       <div className="flex items-center gap-4">
-        <div
+        {/* <div
           className="text-white flex items-center text-lg gap-2 hover:opacity-75 transition-all cursor-pointer"
-          onClick={() => signOut()}
+          // onClick={() => handleSignOut()}
         >
           Sair
           <IoMdExit />
-        </div>
+        </div> */}
       </div>
     </header>
   );

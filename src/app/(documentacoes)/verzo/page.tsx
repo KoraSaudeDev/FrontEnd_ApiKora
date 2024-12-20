@@ -1,12 +1,13 @@
 import Image from "next/image";
-import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { cookies } from 'next/headers'; 
+import { redirect } from 'next/navigation'; 
 
 export default async function Verzo() {
-  const session = await getServerSession();
+  const cookieStore = cookies();
+  const userCookie = (await cookieStore).get('user');
 
-  if (!session) {
-    redirect("/login");
+  if (!userCookie) {
+    redirect('/login');
   }
   return (
     <main className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
@@ -233,3 +234,5 @@ export default async function Verzo() {
     </main>
   );
 }
+
+

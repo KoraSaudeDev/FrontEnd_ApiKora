@@ -3,10 +3,11 @@
 import Image from "next/image";
 import { useState } from "react";
 // import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-// import { alert } from "@/hooks/use-alert";
+import { alert } from "@/hooks/use-alert";
 import { api } from "@/lib/axios";
+// import { cookies } from "next/headers";
 
 export default function Login() {
   const logoKoraUrl = "https://i.postimg.cc/8k9pdsZV/unnamed.png";
@@ -14,21 +15,31 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const handleSubmit = () => {
     setIsLoading(true);
-    // const user = {
-    //   username: "hugo",
-    //   password: "3XIoVdlz2v71",
-    // };
 
     const user = {
       username: userName,
       password: password,
     };
 
-    api().post("auth/login" , user).then((res) => console.log(res)).catch((e) => console.log(e))
+    api()
+      .post("auth/login", user)
+      .then((res) => {
+        document.cookie = `user=${res.data.token}; path=/; max-age=3600; secure;`;
+        if (res?.status === 200) {
+          return router.push("/verzo#sobre");
+        }
+      })
+      .catch(() => {
+        alert({
+          title: "Erro na autenticação!",
+          text: "Username ou senha incorreta.",
+          withClose: true,
+        });
+      }).finally(() => setIsLoading(false))
 
     // signIn("credentials", { ...user, redirect: false, callbackUrl: "/verzo" })
     //   .then((res) => {
@@ -45,7 +56,6 @@ export default function Login() {
     //   .catch(() => console.log("deu erro"))
     //   .finally(() => setIsLoading(false));
   };
-
 
   return (
     <div className="bg-[#f3f7fc] flex justify-center items-center w-full h-screen flex-col gap-10">
@@ -87,8 +97,15 @@ export default function Login() {
           onClick={handleSubmit}
           disabled={isLoading}
         >
-            
-          {isLoading && <Image src="/images/loading.svg" alt="" width={1500} height={20} className="h-5" />}
+          {isLoading && (
+            <Image
+              src="/images/loading.svg"
+              alt=""
+              width={1500}
+              height={20}
+              className="h-5"
+            />
+          )}
           {!isLoading && "Entrar"}
         </button>
       </div>
