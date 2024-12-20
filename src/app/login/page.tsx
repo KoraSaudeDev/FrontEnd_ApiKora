@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { signIn } from "next-auth/react";
+// import { useRouter } from "next/navigation";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
-import { alert } from "@/hooks/use-alert";
+// import { alert } from "@/hooks/use-alert";
+import { api } from "@/lib/axios";
 
 export default function Login() {
   const logoKoraUrl = "https://i.postimg.cc/8k9pdsZV/unnamed.png";
@@ -13,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   const handleSubmit = () => {
     setIsLoading(true);
@@ -27,20 +28,22 @@ export default function Login() {
       password: password,
     };
 
-    signIn("credentials", { ...user, redirect: false, callbackUrl: "/verzo" })
-      .then((res) => {
-        if (res?.status === 200) {
-          return router.push("/verzo#sobre");
-        }
+    api().post("auth/login" , user).then((res) => console.log(res)).catch((e) => console.log(e))
 
-        alert({
-          title: "Erro na autenticação!",
-          text: "Username ou senha incorreta.",
-          withClose: true,
-        });
-      })
-      .catch(() => console.log("deu erro"))
-      .finally(() => setIsLoading(false));
+    // signIn("credentials", { ...user, redirect: false, callbackUrl: "/verzo" })
+    //   .then((res) => {
+    //     if (res?.status === 200) {
+    //       return router.push("/verzo#sobre");
+    //     }
+
+    //     alert({
+    //       title: "Erro na autenticação!",
+    //       text: "Username ou senha incorreta.",
+    //       withClose: true,
+    //     });
+    //   })
+    //   .catch(() => console.log("deu erro"))
+    //   .finally(() => setIsLoading(false));
   };
 
 
