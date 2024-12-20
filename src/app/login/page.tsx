@@ -41,20 +41,6 @@ export default function Login() {
         });
       }).finally(() => setIsLoading(false))
 
-    // signIn("credentials", { ...user, redirect: false, callbackUrl: "/verzo" })
-    //   .then((res) => {
-    //     if (res?.status === 200) {
-    //       return router.push("/verzo#sobre");
-    //     }
-
-    //     alert({
-    //       title: "Erro na autenticação!",
-    //       text: "Username ou senha incorreta.",
-    //       withClose: true,
-    //     });
-    //   })
-    //   .catch(() => console.log("deu erro"))
-    //   .finally(() => setIsLoading(false));
   };
 
   return (
