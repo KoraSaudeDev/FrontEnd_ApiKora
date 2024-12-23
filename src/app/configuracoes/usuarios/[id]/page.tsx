@@ -8,7 +8,7 @@ import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import {  redirect, useParams } from "next/navigation";
+import {  redirect, useParams, useRouter } from "next/navigation";
 import React from "react";
 import { useApplication } from "@/providers/application-provider";
 import { getCookies } from "@/helper/getCookies";
@@ -36,7 +36,7 @@ export default function CadastrarUsuario() {
     { value: "administrador", label: "Administrador" },
     { value: "usuario", label: "Usuário" },
   ];
-
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -106,22 +106,23 @@ export default function CadastrarUsuario() {
 
       alert({
         intent: "success",
-        title: "Usuário criado!",
-        text: "Usuário criado com sucesso",
+        title: "Usuário editado!",
+        text: "Usuário editado com sucesso",
       });
 
       setIsLoading(false)
+      router.push("/configuracoes/usuarios");
       
       setTimeout(() => (
         window.location.reload()
-      ), 700)
+      ), 1000)
 
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({
         intent: "error",
         title: "Erro!",
-        text: "Erro ao criar usuário",
+        text: "Erro ao editar usuário",
         withClose: true,
       });
 

@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import { redirect, useParams } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import { getCookies } from "@/helper/getCookies";
 import { useApplication } from "@/providers/application-provider";
 
@@ -14,6 +14,7 @@ export default function EditarRota() {
   const params = useParams<{ id: string }>()
   const idRoute = params.id
   const { usuario } = useApplication();
+  const router = useRouter();
 
   if (!getCookies("user")) {
     redirect("/login");
@@ -49,10 +50,12 @@ export default function EditarRota() {
         withClose: true
       });
 
-      setTimeout(() => {
-        window.location.reload()
-      }, 700);
       setIsLoading(false)
+      router.push("/configuracoes/rotas");
+      
+      setTimeout(() => (
+        window.location.reload()
+      ), 1000)
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({

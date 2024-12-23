@@ -6,12 +6,13 @@ import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 
 export default function CadastrarRota() {
   const [isLoading, setIsLoading] = useState(false);
   const { usuario } = useApplication();
+  const router = useRouter();
 
   if (!getCookies("user")) {
     redirect("/login");
@@ -45,10 +46,12 @@ export default function CadastrarRota() {
         withClose: false
       });
 
-      setTimeout(() => {
-        window.location.reload()
-      }, 1000);
       setIsLoading(false)
+      router.push("/configuracoes/rotas");
+      
+      setTimeout(() => (
+        window.location.reload()
+      ), 1000)
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({

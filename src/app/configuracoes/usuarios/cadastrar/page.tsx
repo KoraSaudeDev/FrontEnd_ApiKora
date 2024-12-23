@@ -9,7 +9,7 @@ import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { useApplication } from "@/providers/application-provider";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { getCookies } from "@/helper/getCookies";
 
 export default function CadastrarUsuario() {
@@ -23,6 +23,7 @@ export default function CadastrarUsuario() {
   ];
 
   const {  usuario } = useApplication();
+  const router = useRouter();
 
   if (usuario && usuario?.is_admin === false) {
     redirect("/404");
@@ -94,10 +95,11 @@ export default function CadastrarUsuario() {
         withClose: false
       });
       setIsLoading(false)
+      router.push("/configuracoes/usuarios");
 
-      setTimeout(() => (
+      setTimeout(() => {        
         window.location.reload()
-      ), 1000)
+      }, 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({

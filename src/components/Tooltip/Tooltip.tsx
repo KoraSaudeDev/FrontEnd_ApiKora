@@ -21,7 +21,7 @@ export const Tooltip = React.forwardRef<HTMLDivElement, TooltipProps>(
           <TooltipPrimitive.Trigger asChild>{trigger}</TooltipPrimitive.Trigger>
           <TooltipPrimitive.Portal>
             <TooltipPrimitive.Content
-              className="transition-all !z-[3000] overflow-hidden rounded bg-slate-800 px-2 py-1 text-[12px] font-[450] text-white"
+              className="transition-all !z-[99999999] overflow-hidden rounded bg-slate-800 px-2 py-1 text-[12px] font-[450] text-white"
               sideOffset={sideOffset}
               ref={ref}
               {...props}

@@ -4,23 +4,21 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { IoReorderThreeOutline, IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
+import { Tooltip } from "../Tooltip/Tooltip";
 
 type HeaderProps = {
   openSidebar: boolean;
   onChangeOpenSidebar: () => void;
 };
 
-export default function  Header(props: HeaderProps) {
+export default function Header(props: HeaderProps) {
   const { openSidebar, onChangeOpenSidebar } = props;
   const { usuario } = useApplication();
 
-
-
   const handleLogout = () => {
-    removeCookie("user")
-    redirect("/login")
-  }
-
+    removeCookie("user");
+    redirect("/login");
+  };
 
   return (
     <header
@@ -36,14 +34,23 @@ export default function  Header(props: HeaderProps) {
 
       <div className="flex items-center gap-4">
         {usuario?.is_admin && (
-          <Link href="/configuracoes/usuarios" className="border-r border-r-white pr-4">
-            <IoSettingsOutline className="text-white" size={22} />
-          </Link>
+          <Tooltip
+            side="bottom"
+            text="Configurações"
+            trigger={
+              <Link
+                href="/configuracoes/usuarios"
+                className="border-r border-r-white pr-4"
+              >
+                <IoSettingsOutline className="text-white" size={22} />
+              </Link>
+            }
+          />
         )}
-         <div className="text-white flex gap-2 mr-4"> 
-            Sair
-            <MdLogout className="text-white" size={22} onClick={handleLogout} />
-          </div>
+        <div className="text-white flex gap-2 mr-4 cursor-pointer" onClick={handleLogout}>
+          Sair
+          <MdLogout className="text-white" size={22} />
+        </div>
       </div>
     </header>
   );
