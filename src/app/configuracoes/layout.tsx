@@ -1,7 +1,7 @@
 "use client";
 
 import Header from "@/components/Header/Header";
-import Sidebar from "@/components/Sidebar/Sidebar";
+import SidebarConfiguracoes from "@/components/Sidebar/SidebarConfiguracoes";
 import { api } from "@/lib/axios";
 import { useApplication } from "@/providers/application-provider";
 import { ReactNode, useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useState } from "react";
 type SettingsProps = {
   children: ReactNode;
 };
-export default function MainLayout({ children }: SettingsProps) {
+export default function SettingsLayout({ children }: SettingsProps) {
   const [openSidebar, setOpenSidebar] = useState(true);
 
   const { init} = useApplication();
@@ -22,14 +22,12 @@ export default function MainLayout({ children }: SettingsProps) {
     api()
     .get(`/users/me`)
     .then((res) => {
+      console.log(res.data.user)
       init(res.data.user)
     });
   }, [])
-
-
   return (
     <div className="bg-[#284557] min-h-screen overflow-hidden">
-
       <Header
         openSidebar={openSidebar}
         onChangeOpenSidebar={handleOpenSidebar}
@@ -37,8 +35,7 @@ export default function MainLayout({ children }: SettingsProps) {
       <div className="flex">
         {/* Sidebar fixa */}
         <div className={`${openSidebar ? "w-[250px]" : "w-0"} fixed top-0 left-0 h-full bg-[#f3f7fc]`}>
-          <Sidebar openSidebar={openSidebar} />
-
+          <SidebarConfiguracoes openSidebar={openSidebar} />
         </div>
 
         {/* Conteúdo que tem scroll */}

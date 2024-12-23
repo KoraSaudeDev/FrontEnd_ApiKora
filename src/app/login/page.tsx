@@ -9,6 +9,7 @@ import { alert } from "@/hooks/use-alert";
 import { api } from "@/lib/axios";
 // import { cookies } from "next/headers";
 
+
 export default function Login() {
   const logoKoraUrl = "https://i.postimg.cc/8k9pdsZV/unnamed.png";
   const [userName, setUserName] = useState("");
@@ -35,6 +36,7 @@ export default function Login() {
       })
       .catch(() => {
         alert({
+          intent: "error",
           title: "Erro na autenticação!",
           text: "Username ou senha incorreta.",
           withClose: true,

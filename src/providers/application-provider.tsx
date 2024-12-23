@@ -14,10 +14,17 @@ import React, {
  |-----------------------------------------------------------------------------
 */
 
+type User = {
+  id: number;
+  is_admin: boolean;
+  username: string;
+  routes: string[]
+}
+
 
 type ApplicationContext = {
-  usuario: string[] | null;
-  init(data: string[] ): void;
+  usuario: User | null;
+  init(data: User): void;
 };
 
 /*
@@ -35,13 +42,13 @@ const ApplicationContext = createContext<ApplicationContext | undefined>(
  |-----------------------------------------------------------------------------
 */
 export const ApplicationProvider = (props: {
-  data: string[];
+  data: User | null;
   children: ReactNode;
 }) => {
   const { data, children } = props;
 
   // States ---
-  const [usuario, setUsuario] = useState<string[] | null>(null);
+  const [usuario, setUsuario] = useState<User | null>(null);
 
   // Effects ---
   useEffect(() => {
@@ -50,14 +57,13 @@ export const ApplicationProvider = (props: {
   }, [data]);
 
   // Functions ---
-  function init(data: string[]) {
+  function init(data: User) {
    return  data && setUsuario(data);
   }
 
   // Context ---
   const context = {
     usuario,
-
     init,
   };
 

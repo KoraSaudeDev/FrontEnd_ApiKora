@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 type State = {
+  intent: "success" | "error";
   open: boolean;
   title: string;
   text: string;
@@ -12,6 +13,7 @@ type Setter = React.Dispatch<React.SetStateAction<State>> | null;
 let setterAlert: Setter = null;
 
 let memoryStateAlert: State = {
+  intent: "success",
   open: false,
   title: "",
   text: "",

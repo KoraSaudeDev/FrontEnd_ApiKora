@@ -25,7 +25,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${roboto.variable} antialiased`}>
-        <ApplicationProvider data={[]}>
+        <ApplicationProvider data={null}>
           <Alerter />
           <Toast.Provider>{children}</Toast.Provider>
         </ApplicationProvider>

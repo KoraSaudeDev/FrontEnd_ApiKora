@@ -8,6 +8,7 @@ export function Alerter() {
   const data = useAlert();
 
   const props = {
+    intent: data.intent,
     title: data.title,
     text: data.text,
     label: data.label,
