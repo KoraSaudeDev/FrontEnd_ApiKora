@@ -31,7 +31,7 @@ export default function Login() {
       .then((res) => {
         document.cookie = `user=${res.data.token}; path=/; max-age=3600; secure;`;
         if (res?.status === 200) {
-          return router.push("/verzo#sobre");
+          return router.push("/inicio");
         }
       })
       .catch(() => {

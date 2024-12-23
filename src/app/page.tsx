@@ -11,7 +11,7 @@ export default async function Home() {
 
 
     if (userCookie) {
-        redirect('/verzo');
+        redirect('/inicio');
       }
     return (
         <div className="bg-[#f3f7fc] flex justify-center items-center w-full h-screen flex-col gap-10"></div>

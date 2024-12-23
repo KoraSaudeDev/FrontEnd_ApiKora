@@ -1,13 +1,23 @@
+"use client"
+
 import Image from "next/image";
-import { cookies } from 'next/headers'; 
 import { redirect } from 'next/navigation'; 
+import { useApplication } from "@/providers/application-provider";
+import { getCookies } from "@/helper/getCookies";
 
-export default async function Verzo() {
-  const cookieStore = cookies();
-  const userCookie = (await cookieStore).get('user');
+export default function Verzo() {
+  const { usuario } = useApplication();
 
-  if (!userCookie) {
-    redirect('/login');
+  if (!getCookies("user")) {
+    redirect("/login");
+  }
+
+  if (usuario && usuario?.is_admin === false) {
+    redirect("/404");
+  }
+
+  if (usuario?.is_admin === false && usuario?.routes && !usuario.routes.includes("/verzo")) {
+    redirect("/404");
   }
   return (
     <main className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
