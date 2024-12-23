@@ -14,7 +14,7 @@ import { getCookies } from "@/helper/getCookies";
 
 export default function CadastrarUsuario() {
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [routes, setRoutes] = useState<any>([]);
   const optionsProfile = [
@@ -36,8 +36,6 @@ export default function CadastrarUsuario() {
     register,
     handleSubmit,
     control,
-    // setValue,
-    // reset,
     watch,
     formState: { errors },
   } = useForm();
@@ -70,6 +68,7 @@ export default function CadastrarUsuario() {
   };
 
   const onSubmit = async (data: any) => {
+    setIsLoading(true)
     try {
       const user = {
         username: data.username,
@@ -94,6 +93,7 @@ export default function CadastrarUsuario() {
         text: "Usuário criado com sucesso",
         withClose: false
       });
+      setIsLoading(false)
 
       setTimeout(() => (
         window.location.reload()
@@ -106,6 +106,7 @@ export default function CadastrarUsuario() {
         text: "Erro ao criar usuário",
         withClose: true
       });
+      setIsLoading(false)
     }
   };
 

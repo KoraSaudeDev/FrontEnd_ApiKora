@@ -29,7 +29,7 @@ export default function CadastrarUsuario() {
   }
 
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const [routes, setRoutes] = useState<any>([]);
   const optionsProfile = [
@@ -82,6 +82,7 @@ export default function CadastrarUsuario() {
   };
 
   const onSubmit = async (data: any) => {
+    setIsLoading(true)
     try {
       const user = {
         username: data.username,
@@ -108,6 +109,8 @@ export default function CadastrarUsuario() {
         title: "Usuário criado!",
         text: "Usuário criado com sucesso",
       });
+
+      setIsLoading(false)
       
       setTimeout(() => (
         window.location.reload()
@@ -121,6 +124,8 @@ export default function CadastrarUsuario() {
         text: "Erro ao criar usuário",
         withClose: true,
       });
+
+      setIsLoading(false)
     }
   };
 
