@@ -17,39 +17,44 @@ export default function Sidebar(props: SidebarProps) {
     if (usuario) {
       // Verifica se o usuário é admin ou se tem a rota /verzo
       if (usuario.is_admin) {
-        return setItems((prevItems: any) => [
-          ...prevItems,
-          {
-            item: "Verzo",
-            children: [
-              { label: "Sobre", path: "/verzo#sobre" },
-              { label: "API", path: "/verzo#api" },
-              { label: "Autenticação", path: "/verzo#autenticacao" },
-              { label: "MV", path: "/verzo#mv" },
-              { label: "Tasy", path: "/verzo#tasy" },
-            ],
-          },
-        ]);
-      } else if (usuario.routes && usuario.routes.includes("/verzo")) {
-        return setItems((prevItems: any) => [
-          ...prevItems,
-          {
-            item: "Verzo",
-            children: [
-              { label: "Sobre", path: "/verzo#sobre" },
-              { label: "API", path: "/verzo#api" },
-              { label: "Autenticação", path: "/verzo#autenticacao" },
-              { label: "MV", path: "/verzo#mv" },
-              { label: "Tasy", path: "/verzo#tasy" },
-            ],
-          },
-        ]);
+        console.log("entrei aqui")
+        return setItems([ {
+          item: "Verzo",
+          children: [
+            { label: "Sobre", path: "/verzo#sobre" },
+            { label: "API", path: "/verzo#api" },
+            { label: "Autenticação", path: "/verzo#autenticacao" },
+            { label: "MV", path: "/verzo#mv" },
+            { label: "Tasy", path: "/verzo#tasy" },
+          ],
+        }]);
+      } else if (!usuario.is_admin && usuario.routes && usuario.routes.includes("/verzo")) {
+        console.log("entrei aqui 3")
+        return setItems([ {
+          item: "Verzo",
+          children: [
+            { label: "Sobre", path: "/verzo#sobre" },
+            { label: "API", path: "/verzo#api" },
+            { label: "Autenticação", path: "/verzo#autenticacao" },
+            { label: "MV", path: "/verzo#mv" },
+            { label: "Tasy", path: "/verzo#tasy" },
+          ],
+        }]);
       }
     }
+
+
   };
 
+  console.log(usuario)
+
+ 
+
   useEffect(() => {
-    handleAddVerzo();
+    if(items.length === 0) {
+      handleAddVerzo();
+    }
+
   }, [usuario]);
 
   return (
