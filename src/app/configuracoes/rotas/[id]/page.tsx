@@ -128,7 +128,7 @@ export default function EditarRota() {
               )}
             />
             {errors.route_prefix?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">O prefixo obrigatório</p>
+              <p className="text-xs text-red-600 mt-1">O prefixo é obrigatório</p>
             )}
           </div>
           <div className="w-full flex flex-col gap-1">
@@ -142,7 +142,7 @@ export default function EditarRota() {
             />
             {errors.description?.type === "required" && (
               <p className="text-xs text-red-600 mt-1">
-                A descrição é obrigatório
+                A descrição é obrigatória
               </p>
             )}
           </div>

@@ -13,6 +13,8 @@ export function Alerter() {
     text: data.text,
     label: data.label,
     withClose: data.withClose,
+    withConfirm: data.withConfirm,
+    confirm: data.confirm
   };
 
   return <Alert open={data.open} setOpen={data.setOpen} {...props} />;

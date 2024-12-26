@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
 type State = {
-  intent: "success" | "error";
+  intent: "success" | "error" | "confirm";
   open: boolean;
   title: string;
   text: string;
   label: string;
   withClose?: boolean;
+  confirm?: () => void;
+  withConfirm?: boolean;
 };
 
 type Setter = React.Dispatch<React.SetStateAction<State>> | null;
