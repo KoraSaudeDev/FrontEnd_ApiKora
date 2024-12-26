@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
@@ -13,14 +13,6 @@ export default function CadastrarRota() {
   const [isLoading, setIsLoading] = useState(false);
   const { usuario } = useApplication();
   const router = useRouter();
-
-  if (!getCookies("user")) {
-    redirect("/login");
-  }
-
-  if (usuario && usuario?.is_admin === false) {
-    redirect("/404");
-  }
 
   const {
     register,
@@ -43,15 +35,13 @@ export default function CadastrarRota() {
         intent: "success",
         title: "Rota criada!",
         text: "Rota criada com sucesso",
-        withClose: false
+        withClose: false,
       });
 
-      setIsLoading(false)
+      setIsLoading(false);
       router.push("/configuracoes/rotas");
-      
-      setTimeout(() => (
-        window.location.reload()
-      ), 1000)
+
+      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({
@@ -63,6 +53,16 @@ export default function CadastrarRota() {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!getCookies("user")) {
+      redirect("/login");
+    }
+
+    if (usuario && usuario?.is_admin === false) {
+      redirect("/404");
+    }
+  }, []);
 
   return (
     <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from 'next/navigation';
 
 type SidebarProps = {
   openSidebar: boolean;
@@ -9,7 +10,11 @@ type SidebarProps = {
 
 export default function SidebarConfiguracoes(props: SidebarProps) {
   const { openSidebar } = props;
+  const pathname = usePathname();
 
+  const containsWordInPathname = (word: string): boolean => { 
+    return pathname.includes(word); 
+  };
   return (
     <div
       className={`${
@@ -31,10 +36,10 @@ export default function SidebarConfiguracoes(props: SidebarProps) {
         <p className="text-gray-800">Configurações</p>
       </div>
       <div className="flex flex-col p-3 font-medium text-sm gap-2 ">
-        <Link href="/configuracoes/usuarios" className="text-[#284557]">
+        <Link href="/configuracoes/usuarios" className="text-[#284557] data-[active=true]:text-blue-600" data-active={containsWordInPathname("usuarios")}>
           Usuários
         </Link>
-        <Link href="/configuracoes/rotas" className="text-[#284557]">
+        <Link href="/configuracoes/rotas" className="text-[#284557] data-[active=true]:text-blue-600" data-active={containsWordInPathname("rotas")}>
           Rotas
         </Link>
       </div>

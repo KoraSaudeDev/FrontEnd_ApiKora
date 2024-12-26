@@ -22,17 +22,9 @@ export default function CadastrarUsuario() {
     { value: "usuario", label: "Usuário" },
   ];
 
-  const {  usuario } = useApplication();
+  const { usuario } = useApplication();
   const router = useRouter();
 
-  if (usuario && usuario?.is_admin === false) {
-    redirect("/404");
-  }
-
-  if (!getCookies("user")) {
-    redirect("/login");
-  } 
-  
   const {
     register,
     handleSubmit,
@@ -69,7 +61,7 @@ export default function CadastrarUsuario() {
   };
 
   const onSubmit = async (data: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const user = {
         username: data.username,
@@ -92,13 +84,13 @@ export default function CadastrarUsuario() {
         intent: "success",
         title: "Usuário criado!",
         text: "Usuário criado com sucesso",
-        withClose: false
+        withClose: false,
       });
-      setIsLoading(false)
+      setIsLoading(false);
       router.push("/configuracoes/usuarios");
 
-      setTimeout(() => {        
-        window.location.reload()
+      setTimeout(() => {
+        window.location.reload();
       }, 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
@@ -106,9 +98,9 @@ export default function CadastrarUsuario() {
         intent: "error",
         title: "Erro!",
         text: "Erro ao criar usuário",
-        withClose: true
+        withClose: true,
       });
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -128,6 +120,14 @@ export default function CadastrarUsuario() {
   useEffect(() => {
     setIsMounted(true);
     handleGetRoutes();
+
+    if (usuario && usuario?.is_admin === false) {
+      redirect("/404");
+    }
+  
+    if (!getCookies("user")) {
+      redirect("/login");
+    } 
   }, []);
 
   return (

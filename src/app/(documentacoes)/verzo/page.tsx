@@ -1,24 +1,31 @@
-"use client"
+"use client";
 
 import Image from "next/image";
-import { redirect } from 'next/navigation'; 
+import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { getCookies } from "@/helper/getCookies";
+import { useEffect } from "react";
 
 export default function Verzo() {
   const { usuario } = useApplication();
 
-  if (!getCookies("user")) {
-    redirect("/login");
-  }
+  useEffect(() => {
+    if (!getCookies("user")) {
+      redirect("/login");
+    }
 
-  if (usuario && usuario?.is_admin === false) {
-    redirect("/404");
-  }
+    if (usuario && usuario?.is_admin === false) {
+      redirect("/404");
+    }
 
-  if (usuario?.is_admin === false && usuario?.routes && !usuario.routes.includes("/verzo")) {
-    redirect("/404");
-  }
+    if (
+      usuario?.is_admin === false &&
+      usuario?.routes &&
+      !usuario.routes.includes("/verzo")
+    ) {
+      redirect("/404");
+    }
+  }, []);
   return (
     <main className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
       <section id="sobre" className="pt-2">
@@ -244,5 +251,3 @@ export default function Verzo() {
     </main>
   );
 }
-
-
