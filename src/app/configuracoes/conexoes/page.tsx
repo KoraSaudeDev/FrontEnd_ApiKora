@@ -108,17 +108,17 @@ export default function Conexoes() {
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {connections.map((route: any) => {
+                {connections.map((connection: any) => {
                   return (
-                    <tr className="border-b text-sm" key={route.id}>
-                      <td className="py-2 text-start pl-4">{route.name}</td>
-                      <td className="py-2 text-start">{route.username}</td>
-                      <td className="py-2 text-start">{route.port}</td>
-                      <td className="py-2 text-start">{route.host}</td>
-                      <td className="py-2 text-start">{route.service_name}</td>
-                      <td className="py-2 text-start">{route.db_type}</td>
+                    <tr className="border-b text-sm" key={connection.id}>
+                      <td className="py-2 text-start pl-4">{connection.name}</td>
+                      <td className="py-2 text-start">{connection.username}</td>
+                      <td className="py-2 text-start">{connection.port}</td>
+                      <td className="py-2 text-start">{connection.host}</td>
+                      <td className="py-2 text-start">{connection.service_name}</td>
+                      <td className="py-2 text-start">{connection.db_type}</td>
                       <td className="py-2 text-start">
-                        {formatarData(route.created_at)}
+                        {formatarData(connection.created_at)}
                       </td>
                       <td className="py-2 text-end pr-4 flex justify-end items-center gap-4">
                         <Tooltip
@@ -129,7 +129,7 @@ export default function Conexoes() {
                               size={18}
                               className="cursor-pointer transition hover:text-red-500"
                               onClick={() =>
-                                handleDeleteConnectionAlert(route.id)
+                                handleDeleteConnectionAlert(connection.id)
                               }
                             />
                           }

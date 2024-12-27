@@ -46,6 +46,10 @@ export default function SidebarConfiguracoes(props: SidebarProps) {
         <Link href="/configuracoes/conexoes" className="text-[#284557] data-[active=true]:text-blue-600" data-active={containsWordInPathname("conexoes")}>
           Conexões
         </Link>
+
+        <Link href="/configuracoes/sistemas" className="text-[#284557] data-[active=true]:text-blue-600" data-active={containsWordInPathname("sistemas")}>
+          Sistemas
+        </Link>
       </div>
     </div>
   );

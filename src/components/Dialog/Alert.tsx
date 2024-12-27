@@ -25,7 +25,7 @@ export function Alert(props: AlertProps) {
     setOpen,
     withClose,
     confirm,
-    withConfirm,
+    withConfirm = false,
   } = props;
 
   return (
