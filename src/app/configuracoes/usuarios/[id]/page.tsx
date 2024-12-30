@@ -152,7 +152,6 @@ export default function CadastrarUsuario() {
         setValue("profile", user.is_admin ? "administrador" : "usuario");
         setValue("routes", user.routes);
 
-        console.log(res);
       })
       .catch(() => console.log("Não foi possivel buscar os usuários"));
   };

@@ -39,8 +39,7 @@ export default function Usuarios() {
   const handleDeactivateUser = (id: string) => {
     api()
       .delete(`/users/delete/${id}`)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         alert({
           intent: "success",
           title: "Usuário desativado!",

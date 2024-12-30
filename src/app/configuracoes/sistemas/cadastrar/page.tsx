@@ -48,7 +48,6 @@ export default function CadastrarSistema() {
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setIsLoading(true);
     try {
 

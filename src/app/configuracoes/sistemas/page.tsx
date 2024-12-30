@@ -10,11 +10,12 @@ import { useApplication } from "@/providers/application-provider";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
 import { MdModeEdit } from "react-icons/md";
+import { FaDatabase } from "react-icons/fa";
 
 type connectionsType = {
-  id: number,
-  name: string
-}
+  id: number;
+  name: string;
+};
 
 export default function Sistemas() {
   const [systems, setSystems] = useState<any>([]);
@@ -24,42 +25,40 @@ export default function Sistemas() {
   const [limit] = useState(10);
   const [total] = useState(0);
 
-  
-
   const handleGetSystems = () => {
     api()
       .get(`systems/list?page=${page}&limit=${limit}`)
-      .then((res) =>{ setSystems(res.data.systems)
+      .then((res) => {
+        setSystems(res.data.systems);
         // setTotal(res.data.total)
       })
       .catch(() => console.log("Não foi possivel buscar os sistemas"));
   };
 
-  function gerarStringCidades(connections: connectionsType[]) {
-    // Pega no máximo 10 cidades
-    const cidadesLimitadas = connections.slice(0, 10);
-    
-    // Cria a string com os nomes das cidades
-    const cidadesString = cidadesLimitadas.map(cidade => cidade.name).join(' - ');
-    
-    // Se o array original tiver mais de 10 elementos, adicionar o texto "mais X"
+  function generateConnectionString(connections: connectionsType[]) {
+    const limitedConnections = connections.slice(0, 10);
+
+    const connectionsString = limitedConnections
+      .map((connection) => connection.name)
+      .join(" - ");
+
     if (connections.length > 10) {
       const restante = connections.length - 10;
-      return `${cidadesString} - mais ${restante}`;
+      return `${connectionsString} - mais ${restante}`;
     }
-    
-    return cidadesString;
+
+    return connectionsString;
   }
 
   useEffect(() => {
     if (!getCookies("user")) {
       redirect("/login");
     }
-  
+
     if (usuario && usuario?.is_admin === false) {
       redirect("/404");
     }
-  }, [])
+  }, []);
 
   useEffect(() => {
     handleGetSystems();
@@ -83,11 +82,7 @@ export default function Sistemas() {
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="py-2 text-start pl-4">
-                    
-                    
-                    Nome
-                  </th>
+                  <th className="py-2 text-start pl-4">Nome</th>
                   <th className="py-2 text-start">Conexões</th>
                   <th className="py-2 text-end pr-4"></th>
                 </tr>
@@ -96,20 +91,32 @@ export default function Sistemas() {
                 {systems.map((system: any) => {
                   return (
                     <tr className="border-b" key={system.id}>
-                      <td className="py-2 text-start pl-4">
-                        {system.name}
+                      <td className="py-2 text-start pl-4">{system.name}</td>
+                      <td className="py-2 text-start">
+                        {generateConnectionString(system.connections)}
                       </td>
-                      <td className="py-2 text-start">{gerarStringCidades(system.connections)}</td>
                       <td className="py-2 text-end pr-4 flex justify-end items-center gap-4">
-                      <Link href={`/configuracoes/sistemas/${system.id}`}>
+                        <Link href={`/configuracoes/sistemas/${system.id}/queries`}>
                           <Tooltip
                             side="top"
-                            text="Editat conexões"
+                            text="Acessar queries"
+                            trigger={
+                              <FaDatabase
+                                size={22}
+                                className="cursor-pointer hover:opacity-50"
+                              />
+                            }
+                          />
+                        </Link>
+                        <Link href={`/configuracoes/sistemas/${system.id}`}>
+                          <Tooltip
+                            side="top"
+                            text="Editar conexões"
                             trigger={
                               <MdModeEdit
-                              size={22}
-                              className="cursor-pointer hover:opacity-50"
-                            />
+                                size={22}
+                                className="cursor-pointer hover:opacity-50"
+                              />
                             }
                           />
                         </Link>

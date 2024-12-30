@@ -56,7 +56,6 @@ export default function EditarSistema() {
       connection_ids: data.connection_ids
     }
 
-    console.log(transformedData)
     setIsLoading(true);
     try {
       await api().post("/systems/update-connections", transformedData);
@@ -88,7 +87,6 @@ export default function EditarSistema() {
     api()
       .get(`/connections/list-simple`)
       .then((res) => {
-        console.log(res);
         setConnections(res.data.connections);
       })
       .catch(() => console.log("Não foi possivel buscar as conexões"));
@@ -152,7 +150,6 @@ export default function EditarSistema() {
                     placeholder="Selecione as conexões"
                     className="w-full"
                     onChange={(selectedOptions: any) => {
-                      console.log("value", field.value);
                       const values = selectedOptions
                         ? selectedOptions.map((option: any) => option.value)
                         : [];

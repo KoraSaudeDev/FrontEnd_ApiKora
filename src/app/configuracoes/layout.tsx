@@ -22,7 +22,6 @@ export default function SettingsLayout({ children }: SettingsProps) {
     api()
     .get(`/users/me`)
     .then((res) => {
-      console.log(res.data.user)
       init(res.data.user)
     });
   }, [])
