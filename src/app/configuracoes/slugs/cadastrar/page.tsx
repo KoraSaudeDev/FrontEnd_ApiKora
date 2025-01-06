@@ -8,38 +8,16 @@ import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
 import { redirect, useParams, useRouter } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
+import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function CadastrarQuery() {
+export default function CadastrarSlug() {
   const [isLoading, setIsLoading] = useState(false);
+  const [grouping, setGrouping] = useState<any>(null);
   const [connections, setConnections] = useState<any>(null);
   const [parameters, setParameters] = useState<any>([]);
   const { usuario } = useApplication();
   const router = useRouter();
-
-  const customStyles: StylesConfig = {
-    control: (provided, state) => ({
-      ...provided,
-      minHeight: 34,
-      height: 34,
-      borderColor: state.isFocused ? "#007aff" : "#ddd",
-      boxShadow: state.isFocused ? "0 0 0 1px #007aff" : "none",
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-      "&:hover": {
-        borderColor: "#007aff",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "#3E4676",
-    }),
-  };
 
   const params = useParams<{ id: string }>();
   const idSystem = params.id;
@@ -65,11 +43,10 @@ export default function CadastrarQuery() {
     setIsLoading(true);
     try {
       const data = {
-        system_id: Number(idSystem),
         ...dataValues,
         parameters,
       };
-      await api().post("/executors/create", data);
+      await api().post("/routes/create", data);
 
       alert({
         intent: "success",
@@ -79,7 +56,7 @@ export default function CadastrarQuery() {
       });
 
       setIsLoading(false);
-      router.push(`/configuracoes/sistemas/${idSystem}/queries`);
+      router.push(`/configuracoes/slugs`);
 
       setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
@@ -94,11 +71,25 @@ export default function CadastrarQuery() {
     }
   };
 
+  const handleGetGrouping = () => {
+    api()
+      .get(`/systems/list`)
+      .then((res) => {
+        const formattedArray = res.data.systems.map((item: any) => ({
+          label: item.name,
+          value: item.id,
+        }));
+        console.log(res.data.sys);
+        setGrouping(formattedArray);
+      })
+      .catch(() => console.log("Não foi possivel buscar as rotas"));
+  };
+
   const handleGetConnections = () => {
     api()
-      .get(`/systems/details/${idSystem}`)
+      .get(`/connections/list`)
       .then((res) => {
-        const formattedArray = res.data.system.connections.map((item: any) => ({
+        const formattedArray = res.data.connections.map((item: any) => ({
           label: item.name,
           value: item.id,
         }));
@@ -147,11 +138,14 @@ export default function CadastrarQuery() {
     if (!getCookies("user")) {
       redirect("/login");
     }
-
-    if (usuario && usuario?.is_admin === false) {
+  
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/routes")) {
       redirect("/404");
     }
+  },[usuario]);
 
+  useEffect(() => {
+    handleGetGrouping();
     handleGetConnections();
   }, []);
 
@@ -169,13 +163,51 @@ export default function CadastrarQuery() {
             <label className="text-[#3e4676] text-sm font-medium">Nome</label>
             <input
               type="text"
-              className="border border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
               {...register("name", { required: true })}
             />
             {errors.name?.type === "required" && (
               <p className="text-xs text-red-600 mt-1">O nome é obrigatório</p>
             )}
           </div>
+          <div className="w-full flex flex-col gap-1">
+            <label className="text-[#3e4676] text-sm font-medium">
+              Agrupamentos
+            </label>
+            {grouping && (
+              <Controller
+                name="group_id"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    {...field}
+                    options={grouping}
+                    isClearable
+                    styles={customStyles}
+                    placeholder="Selecione um agrupamento"
+                    className="w-full"
+                    value={grouping.find(
+                      (option:any) => option.value === field.value
+                    )}
+                    onChange={(selectedOption: any) => {
+                      field.onChange(
+                        selectedOption ? selectedOption.value : null
+                      );
+                    }}
+                  />
+                )}
+              />
+            )}
+
+            {errors.connection_ids?.type === "required" && (
+              <p className="text-xs text-red-600 mt-1">
+                As conexões são obrigatórias
+              </p>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-4 mt-4">
           <div className="w-full flex flex-col gap-1">
             <label className="text-[#3e4676] text-sm font-medium">
               Conexões
@@ -192,7 +224,7 @@ export default function CadastrarQuery() {
                     isClearable
                     isMulti
                     styles={customStyles}
-                    placeholder="Selecione as conexões"
+                    placeholder="Selecione um agrupamento"
                     className="w-full"
                     onChange={(selectedOptions: any) => {
                       const values = selectedOptions
@@ -226,7 +258,7 @@ export default function CadastrarQuery() {
               render={({ field }) => (
                 <textarea
                   {...field}
-                  className="border border-[#ddd] rounded px-2 py-1 focus-visible:outline-none focus-visible:border-[#007aff]"
+                  className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
                   onChange={(e) => {
                     const inputValue = e.target.value;
 
@@ -277,7 +309,7 @@ export default function CadastrarQuery() {
                     </label>
                     <input
                       type="number"
-                      className="border border-[#ddd] rounded px-2 py-1 focus-visible:outline-none focus-visible:border-[#007aff]"
+                      className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
                       value={parameter.value || ""}
                       onChange={(value) => {
                         const updatedParameters = [...parameters];
@@ -300,7 +332,7 @@ export default function CadastrarQuery() {
                     </label>
                     <input
                       type="text"
-                      className="border border-[#ddd] rounded px-2 py-1 focus-visible:outline-none focus-visible:border-[#007aff]"
+                      className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
                       value={parameter.value || ""}
                       onChange={(value) => {
                         const updatedParameters = [...parameters];

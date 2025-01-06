@@ -11,18 +11,10 @@ import { useApplication } from "@/providers/application-provider";
 
 export default function EditarRota() {
   const [isLoading, setIsLoading] = useState(false);
-  const params = useParams<{ id: string }>()
-  const idRoute = params.id
+  const params = useParams<{ id: string }>();
+  const idRoute = params.id;
   const { usuario } = useApplication();
   const router = useRouter();
-
-  if (!getCookies("user")) {
-    redirect("/login");
-  }
-
-  if (usuario && usuario?.is_admin === false) {
-    redirect("/404");
-  }
 
   const {
     register,
@@ -47,15 +39,13 @@ export default function EditarRota() {
         intent: "success",
         title: "Rota editada!",
         text: "Rota editada com sucesso",
-        withClose: true
+        withClose: true,
       });
 
-      setIsLoading(false)
+      setIsLoading(false);
       router.push("/configuracoes/rotas");
-      
-      setTimeout(() => (
-        window.location.reload()
-      ), 1000)
+
+      setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({
@@ -74,17 +64,25 @@ export default function EditarRota() {
       .then((res) => {
         const route = res.data.route;
         setValue("route_prefix", route.route_prefix);
-        setValue("description",route.description);
-
+        setValue("description", route.description);
       })
       .catch(() => console.log("Não foi possivel buscar os usuários"));
   };
 
-  useEffect(() => {handleGetRoute()}, [])
+  useEffect(() => {
+    handleGetRoute();
+    if (!getCookies("user")) {
+      redirect("/login");
+    }
+  
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/access")) {
+      redirect("/404");
+    }
+  }, [usuario]);
 
   return (
     <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Editar rota</h1>
+      <h1 className="text-lg">Editar acesso</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"
@@ -105,7 +103,7 @@ export default function EditarRota() {
                 <input
                   {...field}
                   type="text"
-                  className="border border-[#ddd] rounded px-2 py-1 focus-visible:outline-none focus-visible:border-[#007aff]"
+                  className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
                   value={
                     field.value
                       ? field.value.startsWith("/")
@@ -128,7 +126,9 @@ export default function EditarRota() {
               )}
             />
             {errors.route_prefix?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">O prefixo é obrigatório</p>
+              <p className="text-xs text-red-600 mt-1">
+                O prefixo é obrigatório
+              </p>
             )}
           </div>
           <div className="w-full flex flex-col gap-1">
@@ -137,7 +137,7 @@ export default function EditarRota() {
             </label>
             <input
               type="text"
-              className="border border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
               {...register("description", { required: true })}
             />
             {errors.description?.type === "required" && (

@@ -3,35 +3,26 @@
 import { useEffect, useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import Select from "react-select";
-import { StylesConfig } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import {  redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useParams, useRouter } from "next/navigation";
 import React from "react";
 import { useApplication } from "@/providers/application-provider";
 import { getCookies } from "@/helper/getCookies";
-
+import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
 export default function CadastrarUsuario() {
-  const params = useParams<{ id: string }>()
-  const idUser = params.id
+  const params = useParams<{ id: string }>();
+  const idUser = params.id;
 
-  const {  usuario } = useApplication();
-
-  if (usuario && usuario?.is_admin === false) {
-    redirect("/404");
-  }
-
-  if (!getCookies("user")) {
-    redirect("/login");
-  }
+  const { usuario } = useApplication();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [routes, setRoutes] = useState<any>([]);
+  const [access, setAccess] = useState<any>([]);
   const optionsProfile = [
     { value: "administrador", label: "Administrador" },
     { value: "usuario", label: "Usuário" },
@@ -50,39 +41,15 @@ export default function CadastrarUsuario() {
       password: "",
       confirmPassword: "",
       profile: "",
-      routes: [] as any,
+      access_ids: [] as any,
     },
   });
 
   const values = watch(["password", "profile"]);
   const isUserProfile = values[1] === "usuario";
 
-  const customStyles: StylesConfig = {
-    control: (provided, state) => ({
-      ...provided,
-      minHeight: 34,
-      height: 34,
-      borderColor: state.isFocused ? "#007aff" : "#ddd",
-      boxShadow: state.isFocused ? "0 0 0 1px #007aff" : "none",
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-      "&:hover": {
-        borderColor: "#007aff",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "#3E4676",
-    }),
-  };
-
   const onSubmit = async (data: any) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
       const user = {
         username: data.username,
@@ -90,33 +57,30 @@ export default function CadastrarUsuario() {
         is_admin: data.profile === "administrador",
       };
 
-      if (!data.password) {
-        delete user.password;
-      }
+     const responseUser = await api().put(`users/edit/${idUser}`, user);
 
-      // Realizando a criação do usuário
-      const createUserResponse = await api().put(`/users/edit/${idUser}`, user);
-      const userId = createUserResponse.data.user_id;
-      if (data.profile === "usuario" && userId) {
-        await api().put(`/users/routes/update`, {
-          user_id: userId,
-          route_ids: data.routes,
-        });
-      }
+     if(data.profile === "usuario") {
+      const userAccess = {
+        user_id: responseUser.data.user_id,
+        access_ids: data.access_ids,
+      };
+
+      await api().put("/access/user/edit", userAccess);
+     }
+
 
       alert({
         intent: "success",
         title: "Usuário editado!",
         text: "Usuário editado com sucesso",
+        withClose: false,
       });
-
-      setIsLoading(false)
+      setIsLoading(false);
       router.push("/configuracoes/usuarios");
-      
-      setTimeout(() => (
-        window.location.reload()
-      ), 1000)
 
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({
@@ -125,22 +89,22 @@ export default function CadastrarUsuario() {
         text: "Erro ao editar usuário",
         withClose: true,
       });
-
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
+
   const handleGetRoutes = () => {
     api()
-      .get("routes/list")
+      .get("/access/list")
       .then((res) => {
-        const formattedArray = res.data.routes.map((item: any) => ({
-          label: item.route_prefix,
+        const formattedArray = res.data.accesses.map((item: any) => ({
+          label: item.name,
           value: item.id,
         }));
-        setRoutes(formattedArray);
+        setAccess(formattedArray);
       })
-      .catch(() => console.log("Não foi possivel buscar as rotas"));
+      .catch(() => console.log("Não foi possivel buscar os usuários"));
   };
 
   const handleGetUser = () => {
@@ -150,8 +114,12 @@ export default function CadastrarUsuario() {
         const user = res.data.user;
         setValue("username", user.username);
         setValue("profile", user.is_admin ? "administrador" : "usuario");
-        setValue("routes", user.routes);
 
+        const transformedIds = user.accesses.map(
+          (item: { access_id: string }) => item.access_id
+        );
+        console.log(user.accesses, "user");
+        setValue("access_ids", transformedIds);
       })
       .catch(() => console.log("Não foi possivel buscar os usuários"));
   };
@@ -161,6 +129,15 @@ export default function CadastrarUsuario() {
     handleGetRoutes();
     handleGetUser();
   }, []);
+
+  useEffect(() => {
+    // if (!getCookies("user")) {
+    //   redirect("/login");
+    // }
+    // if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/users")) {
+    //   redirect("/404");
+    // }
+  }, [usuario]);
 
   return (
     <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
@@ -176,7 +153,7 @@ export default function CadastrarUsuario() {
             <label className="text-[#3e4676] text-sm font-medium">Nome</label>
             <input
               type="text"
-              className="border border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
               {...register("username", { required: true })}
             />
             {errors.username?.type === "required" && (
@@ -188,7 +165,7 @@ export default function CadastrarUsuario() {
             <div className=" relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="border w-full border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+                className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                 {...register("password")}
               />
               <div
@@ -206,7 +183,7 @@ export default function CadastrarUsuario() {
             <div className=" relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="border w-full border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+                className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                 {...register("confirmPassword", {
                   validate: (value) => {
                     if (values[0]) {
@@ -276,21 +253,21 @@ export default function CadastrarUsuario() {
             {isUserProfile && (
               <div className="w-full flex flex-col gap-1">
                 <label className="text-[#3e4676] text-sm font-medium">
-                  Rotas
+                  Acessos
                 </label>
 
                 <Controller
-                  name="routes"
+                  name="access_ids"
                   // rules={{ required: isUserProfile && true }}
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={routes}
+                      options={access}
                       isClearable
                       isMulti
                       styles={customStyles}
-                      placeholder="Selecione as rotas"
+                      placeholder="Selecione os acessos"
                       className="w-full"
                       onChange={(selectedOptions: any) => {
                         const values = selectedOptions
@@ -298,13 +275,13 @@ export default function CadastrarUsuario() {
                           : [];
                         field.onChange(values);
                       }}
-                      value={routes.filter((option: any) =>
+                      value={access.filter((option: any) =>
                         (field.value || []).includes(option.value)
                       )}
                     />
                   )}
                 />
-                {errors.routes?.type === "required" && (
+                {errors.access_ids?.type === "required" && (
                   <p className="text-xs text-red-600 mt-1">
                     As rotas são obrigatórias
                   </p>

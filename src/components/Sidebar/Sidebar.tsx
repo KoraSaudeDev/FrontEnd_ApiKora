@@ -2,6 +2,8 @@ import Accordion from "../Accordion/Accordion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useApplication } from "@/providers/application-provider";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 type SidebarProps = {
   openSidebar: boolean;
@@ -11,6 +13,7 @@ export default function Sidebar(props: SidebarProps) {
   const { openSidebar } = props;
   const { usuario } = useApplication();
   const [items, setItems] = useState<any>([]);
+  const pathname = usePathname();
 
   const handleAddVerzo = () => {
     if (usuario) {
@@ -20,33 +23,46 @@ export default function Sidebar(props: SidebarProps) {
           {
             item: "Verzo",
             children: [
-              { label: "Sobre", path: "/verzo#sobre" },
-              { label: "API", path: "/verzo#api" },
-              { label: "Autenticação", path: "/verzo#autenticacao" },
-              { label: "MV", path: "/verzo#mv" },
-              { label: "Tasy", path: "/verzo#tasy" },
+              { label: "Sobre", path: "/verzo#sobre", isShow: true },
+              { label: "API", path: "/verzo#api", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/verzo#autenticacao",
+                isShow: true,
+              },
+              { label: "MV", path: "/verzo#mv", isShow: true },
+              { label: "Tasy", path: "/verzo#tasy", isShow: true },
             ],
           },
         ]);
       } else if (
         !usuario.is_admin &&
         usuario.routes &&
-        usuario.routes.includes("/verzo")
+        usuario.routes.prefixes.includes("/verzo")
       ) {
+        console.log("entrou");
         return setItems([
           {
             item: "Verzo",
             children: [
-              { label: "Sobre", path: "/verzo#sobre" },
-              { label: "API", path: "/verzo#api" },
-              { label: "Autenticação", path: "/verzo#autenticacao" },
-              { label: "MV", path: "/verzo#mv" },
-              { label: "Tasy", path: "/verzo#tasy" },
+              { label: "Sobre", path: "/verzo#sobre", isShow: true },
+              { label: "API", path: "/verzo#api", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/verzo#autenticacao",
+                isShow: true,
+              },
+              { label: "MV", path: "/verzo#mv", isShow: true },
+              { label: "Tasy", path: "/verzo#tasy", isShow: true },
             ],
           },
         ]);
       }
     }
+  };
+
+  const containsWordInPathname = (word: string): boolean => {
+    return pathname.includes(word);
   };
 
   useEffect(() => {
@@ -75,7 +91,16 @@ export default function Sidebar(props: SidebarProps) {
         </div>
         <p className="text-gray-800">Documentações</p>
       </div>
-      <Accordion items={items} />
+      <Accordion items={items} defaultValue="Verzo" isHash />
+      {(usuario?.is_admin || usuario?.routes.slugs.length > 0) && (
+        <Link
+          href="/slugs"
+          className="text-[#284557] data-[active=true]:text-blue-600 pl-3 h-[28px] text-sm font-medium"
+          data-active={containsWordInPathname("slugs")}
+        >
+          Slugs
+        </Link>
+      )}
     </div>
   );
 }

@@ -52,12 +52,11 @@ export default function Login() {
         <h2 className="text-xl text-[#3e4676] font-semibold">
           Bem-vindo à API Kora
         </h2>
-        <h2 className="text-lg text-[#3e4676] font-semibold">Documentação</h2>
         <div className="w-full flex flex-col gap-1">
           <label className="text-[#3e4676] text-sm font-medium">Nome</label>
           <input
             type="text"
-            className="border border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+            className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
             value={userName}
             onChange={(e) => setUserName(e.target.value)}
           />
@@ -67,7 +66,7 @@ export default function Login() {
           <div className=" relative">
             <input
               type={showPassword ? "text" : "password"}
-              className="border w-full border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border w-full border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />

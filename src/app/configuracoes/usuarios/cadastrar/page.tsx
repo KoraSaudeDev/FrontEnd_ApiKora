@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { FaRegEyeSlash, FaRegEye } from "react-icons/fa";
 import Select from "react-select";
-import { StylesConfig } from "react-select";
 import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
@@ -11,12 +10,13 @@ import { alert } from "@/hooks/use-alert";
 import { useApplication } from "@/providers/application-provider";
 import { redirect, useRouter } from "next/navigation";
 import { getCookies } from "@/helper/getCookies";
+import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
 export default function CadastrarUsuario() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [routes, setRoutes] = useState<any>([]);
+  const [access, setAccess] = useState<any>([]);
   const optionsProfile = [
     { value: "administrador", label: "Administrador" },
     { value: "usuario", label: "Usuário" },
@@ -36,31 +36,9 @@ export default function CadastrarUsuario() {
   const values = watch(["password", "profile"]);
   const isUserProfile = values[1] === "usuario";
 
-  const customStyles: StylesConfig = {
-    control: (provided, state) => ({
-      ...provided,
-      minHeight: 34,
-      height: 34,
-      borderColor: state.isFocused ? "#007aff" : "#ddd",
-      boxShadow: state.isFocused ? "0 0 0 1px #007aff" : "none",
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-      "&:hover": {
-        borderColor: "#007aff",
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      fontFamily: "Arial, sans-serif",
-      fontSize: "1rem",
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: "#3E4676",
-    }),
-  };
-
   const onSubmit = async (data: any) => {
+    console.log(data);
+    console.log(data);
     setIsLoading(true);
     try {
       const user = {
@@ -69,16 +47,17 @@ export default function CadastrarUsuario() {
         is_admin: data.profile === "administrador",
       };
 
-      // Realizando a criação do usuário
-      const createUserResponse = await api().post("users/create", user);
-      const userId = createUserResponse.data.user_id;
+     const responseUser = await api().post("users/create", user);
 
-      if (data.profile === "usuario" && userId) {
-        await api().post("/users/routes/assign", {
-          user_id: userId,
-          route_ids: data.routes,
-        });
-      }
+     if(data.profile === "usuario") {
+      const userAccess = {
+        user_id: responseUser.data.user_id,
+        access_ids: data.access_ids,
+      };
+
+      await api().post("/access/user/create", userAccess);
+     }
+
 
       alert({
         intent: "success",
@@ -106,13 +85,13 @@ export default function CadastrarUsuario() {
 
   const handleGetRoutes = () => {
     api()
-      .get("routes/list")
+      .get("/access/list")
       .then((res) => {
-        const formattedArray = res.data.routes.map((item: any) => ({
-          label: item.route_prefix,
+        const formattedArray = res.data.accesses.map((item: any) => ({
+          label: item.name,
           value: item.id,
         }));
-        setRoutes(formattedArray);
+        setAccess(formattedArray);
       })
       .catch(() => console.log("Não foi possivel buscar os usuários"));
   };
@@ -121,13 +100,13 @@ export default function CadastrarUsuario() {
     setIsMounted(true);
     handleGetRoutes();
 
-    if (usuario && usuario?.is_admin === false) {
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/users")) {
       redirect("/404");
     }
-  
+
     if (!getCookies("user")) {
       redirect("/login");
-    } 
+    }
   }, []);
 
   return (
@@ -144,7 +123,7 @@ export default function CadastrarUsuario() {
             <label className="text-[#3e4676] text-sm font-medium">Nome</label>
             <input
               type="text"
-              className="border border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
               {...register("username", { required: true })}
             />
             {errors.username?.type === "required" && (
@@ -156,7 +135,7 @@ export default function CadastrarUsuario() {
             <div className=" relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="border w-full border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+                className="border w-full border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
                 {...register("password", { required: true })}
               />
               <div
@@ -179,7 +158,7 @@ export default function CadastrarUsuario() {
             <div className=" relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="border w-full border-[#ddd] rounded px-2 py-1  focus-visible:outline-none focus-visible:border-[#007aff]"
+                className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                 {...register("confirmPassword", {
                   required: true,
                   validate: (value) => value === values[0],
@@ -205,7 +184,7 @@ export default function CadastrarUsuario() {
           </div>
         </div>
         {isMounted && (
-          <div className="flex gap-4 mt-4 w-[66.3%]">
+          <div className="grid grid-cols-3 gap-4 mt-4">
             <div className="w-full flex flex-col gap-1">
               <label className="text-[#3e4676] text-sm font-medium">
                 Perfil
@@ -221,9 +200,7 @@ export default function CadastrarUsuario() {
                     isClearable
                     styles={customStyles}
                     placeholder="Selecione o perfil"
-                    className={`${
-                      isUserProfile ? "w-full" : "w-[calc(50%-8px)]"
-                    }`}
+                    className="w-full"
                     value={optionsProfile.find(
                       (option) => option.value === field.value
                     )}
@@ -241,24 +218,23 @@ export default function CadastrarUsuario() {
                 </p>
               )}
             </div>
-
             {isUserProfile && (
               <div className="w-full flex flex-col gap-1">
                 <label className="text-[#3e4676] text-sm font-medium">
-                  Rotas
+                  Acessos
                 </label>
-
                 <Controller
-                  name="routes"
+                  name="access_ids"
+                  rules={{ required: true }}
                   control={control}
                   render={({ field }) => (
                     <Select
                       {...field}
-                      options={routes}
+                      options={access}
                       isClearable
                       isMulti
                       styles={customStyles}
-                      placeholder="Selecione as rotas"
+                      placeholder="Selecione o perfil"
                       className="w-full"
                       onChange={(selectedOptions: any) => {
                         const values = selectedOptions
@@ -266,15 +242,16 @@ export default function CadastrarUsuario() {
                           : [];
                         field.onChange(values);
                       }}
-                      value={routes.filter((option: any) =>
+                      value={access.filter((option: any) =>
                         (field.value || []).includes(option.value)
                       )}
+                    
                     />
                   )}
                 />
-                {errors.routes?.type === "required" && (
+                {errors.access_ids?.type === "required" && (
                   <p className="text-xs text-red-600 mt-1">
-                    As rotas são obrigatórias
+                    Os acessos são obrigatórios
                   </p>
                 )}
               </div>

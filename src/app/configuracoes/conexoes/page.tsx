@@ -69,11 +69,11 @@ export default function Conexoes() {
     if (!getCookies("user")) {
       redirect("/login");
     }
-
-    if (usuario && usuario?.is_admin === false) {
+  
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/connections")) {
       redirect("/404");
     }
-  }, []);
+  }, [usuario]);
 
   useEffect(() => {
     handleGetConnections();

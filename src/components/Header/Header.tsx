@@ -5,6 +5,8 @@ import { redirect } from "next/navigation";
 import { IoReorderThreeOutline, IoSettingsOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { Tooltip } from "../Tooltip/Tooltip";
+import { IoMdPlay } from "react-icons/io";
+import { useEffect, useState } from "react";
 
 type HeaderProps = {
   openSidebar: boolean;
@@ -14,11 +16,65 @@ type HeaderProps = {
 export default function Header(props: HeaderProps) {
   const { openSidebar, onChangeOpenSidebar } = props;
   const { usuario } = useApplication();
+  const [rotaDeConfiguracao, setRotaDeConfiguracao] = useState<string | null>(null);
+
+  const showSettings =
+    usuario?.is_admin ||
+    usuario?.routes.prefixes.includes("/routes") ||
+    usuario?.routes.prefixes.includes("/connections") ||
+    usuario?.routes.prefixes.includes("/systems") ||
+    usuario?.routes.prefixes.includes("/users") ||
+    usuario?.routes.prefixes.includes("/access");
+
+    const showRoutes =  usuario?.is_admin || usuario?.routes.slugs.length > 0;
 
   const handleLogout = () => {
     removeCookie("user");
     redirect("/login");
   };
+
+  function encontrarRotaDeConfiguracao(rotas:any) {
+
+    if(rotas === undefined) return;
+    const rotasDeConfiguracao = ["/systems", "/users", "/routes", "/connections", "/access"];
+    
+    // Verifica se alguma das rotas de configuração está no array fornecido
+    for (let i = 0; i < rotas.length; i++) {
+      if (rotasDeConfiguracao.includes(rotas[i])) {
+        if(rotas[i] === "/systems") {
+          return setRotaDeConfiguracao("/agrupamentos");
+        }
+
+        if(rotas[i] === "/routes") {
+          return setRotaDeConfiguracao("/slugs");
+        }
+
+        if(rotas[i] === "/connections") {
+          return setRotaDeConfiguracao("/conexoes");
+        }
+
+        if(rotas[i] === "/users") {
+          return setRotaDeConfiguracao("/usuarios");
+        }
+
+        if(rotas[i] === "/access") {
+          return setRotaDeConfiguracao("/acessos");
+        }
+      }
+    }
+  
+    return null; // Retorna null caso não encontre nenhuma rota de configuração
+  }
+
+
+useEffect(() => {
+  if(usuario?.is_admin) {
+    setRotaDeConfiguracao("/usuarios");
+  } else {
+    encontrarRotaDeConfiguracao(usuario?.routes.prefixes);
+  }
+  
+}, [usuario]);
 
   return (
     <header
@@ -33,13 +89,24 @@ export default function Header(props: HeaderProps) {
       />
 
       <div className="flex items-center gap-4">
-        {usuario?.is_admin && (
+        {showRoutes && (
+          <Tooltip
+            side="bottom"
+            text="Executar rotas"
+            trigger={
+              <Link href="/slugs" className="pr-2">
+                <IoMdPlay className="text-white" size={22} />
+              </Link>
+            }
+          />
+        )}
+        {showSettings && (
           <Tooltip
             side="bottom"
             text="Configurações"
             trigger={
               <Link
-                href="/configuracoes/usuarios"
+                href={`/configuracoes${rotaDeConfiguracao}`}
                 className="border-r border-r-white pr-4"
               >
                 <IoSettingsOutline className="text-white" size={22} />
@@ -47,7 +114,10 @@ export default function Header(props: HeaderProps) {
             }
           />
         )}
-        <div className="text-white flex gap-2 mr-4 cursor-pointer" onClick={handleLogout}>
+        <div
+          className="text-white items-center flex gap-2 mr-4 cursor-pointer"
+          onClick={handleLogout}
+        >
           Sair
           <MdLogout className="text-white" size={22} />
         </div>

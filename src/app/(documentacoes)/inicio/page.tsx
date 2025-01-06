@@ -1,25 +1,24 @@
 "use client";
 
+import { getCookies } from "@/helper/getCookies";
 import { useApplication } from "@/providers/application-provider";
 import Link from "next/link";
+import { redirect } from "next/navigation";
+import {  useEffect } from "react";
 import { FaRegSadCry } from "react-icons/fa";
 
 export default function Inicio() {
   const { usuario } = useApplication();
-  // const cookieStore = cookies();
-  // const userCookie = (await cookieStore).get('user');
 
-  // if (!userCookie) {
-  //   redirect('/login');
-  // }
-
-  // if (userCookie) {
-  //     redirect('/verzo');
-  //   }
+  useEffect(() => {
+        if (!getCookies("user")) {
+          redirect("/login");
+        }
+  })
   return (
     <div className="bg-[#f3f7fc] flex justify-center items-center w-full h-screen flex-col gap-10 text-[#3e4676]">
       <h1 className="text-3xl font-medium">Bem-vindo à APi Kora</h1>
-      {!usuario?.is_admin && usuario?.routes.length === 0 && (
+      {!usuario?.is_admin && usuario?.accesses.length === 0 && (
         <div className="flex flex-col items-center gap-4">
           <p className="text-2xl">
             Desculpe, mas não há nenhuma documentação disponível para você!
@@ -43,8 +42,8 @@ export default function Inicio() {
       )}
 
       {!usuario?.is_admin &&
-        usuario?.routes &&
-        usuario?.routes.includes("/verzo") && (
+        usuario?.accesses &&
+        usuario?.routes.prefixes.includes("/verzo") && (
         <div className="flex flex-col items-center gap-4">
           <p className="text-2xl">
             Clique no link abaixo para acessar a documentação completa!
@@ -60,7 +59,7 @@ export default function Inicio() {
 
       {!usuario?.is_admin &&
         usuario?.routes &&
-        !usuario?.routes.includes("/verzo") && (
+        !usuario?.routes.prefixes.includes("/verzo") && (
           <div className="flex flex-col items-center gap-4">
             <p className="text-2xl">
               Desculpe, mas não há nenhuma documentação disponível para você!

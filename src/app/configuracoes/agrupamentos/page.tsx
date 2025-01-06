@@ -11,21 +11,22 @@ import { useApplication } from "@/providers/application-provider";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
 
-export default function Rotas() {
-  const [routes, setRoutes] = useState<any>([]);
+export default function Agrupamentos() {
+  const [groups, setGroups] = useState<any>([]);
 
   const { usuario } = useApplication();
-  const [page, setPage] = useState(1);
+  const [page,setPage] = useState(1);
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
 
-  
 
   const handleGetUsers = () => {
     api()
-      .get(`routes/list?page=${page}&limit=${limit}`)
-      .then((res) =>{ setRoutes(res.data.routes)
-        setTotal(res.data.total)
+      .get(`/systems/list?page=${page}&limit=${limit}`)
+      .then((res) => {
+        console.log(res)
+        setGroups(res.data.systems);
+        setTotal(res.data.total);
       })
       .catch(() => console.log("Não foi possivel buscar as rotas"));
   };
@@ -35,10 +36,10 @@ export default function Rotas() {
       redirect("/login");
     }
   
-    if (usuario && usuario?.is_admin === false) {
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/systems")) {
       redirect("/404");
     }
-  }, [])
+  }, [usuario]);
 
   useEffect(() => {
     handleGetUsers();
@@ -47,39 +48,39 @@ export default function Rotas() {
   return (
     <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
       <div className="flex justify-between items-center">
-        <h1 className="text-lg">Rotas</h1>
+        <h1 className="text-lg">Agrupamento</h1>
         <Link
-          href="/configuracoes/rotas/cadastrar"
+          href="/configuracoes/agrupamentos/cadastrar"
           className="bg-indigo-600 py-2 px-4 rounded-md text-white"
         >
-          Adicionar rota
+          Adicionar agrupamento
         </Link>
       </div>
 
-      {routes.length > 0 ? (
+      {groups.length > 0 ? (
         <>
           <div className="w-full overflow-auto border border-slate-200 rounded-md mt-8">
             <table className="w-full">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="py-2 text-start pl-4">Prefix</th>
+                  <th className="py-2 text-start pl-4">Nome</th>
                   <th className="py-2 text-start">Descrição</th>
                   <th className="py-2 text-end pr-4"></th>
                 </tr>
               </thead>
               <tbody className="bg-white">
-                {routes.map((route: any) => {
+                {groups.map((group: any) => {
                   return (
-                    <tr className="border-b" key={route.id}>
+                    <tr className="border-b" key={group.id}>
                       <td className="py-2 text-start pl-4">
-                        {route.route_prefix}
+                        {group.name}
                       </td>
-                      <td className="py-2 text-start">{route.description}</td>
+                      <td className="py-2 text-start">{group.description}</td>
                       <td className="py-2 text-end pr-4 flex justify-end items-center gap-4">
-                        <Link href={`/configuracoes/rotas/${route.id}`}>
+                        <Link href={`/configuracoes/agrupamentos/${group.id}`}>
                           <Tooltip
                             side="top"
-                            text="Editar rota"
+                            text="Editar agrupamento"
                             trigger={
                               <MdModeEdit
                                 size={22}

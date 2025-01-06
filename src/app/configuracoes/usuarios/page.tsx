@@ -20,8 +20,6 @@ export default function Usuarios() {
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
 
-
-
   const handleActivateUser = (id: string) => {
     api()
       .put(`/users/restore/${id}`)
@@ -64,11 +62,15 @@ export default function Usuarios() {
     if (!getCookies("user")) {
       redirect("/login");
     }
-  
-    if (usuario && usuario?.is_admin === false) {
+
+    if (
+      usuario &&
+      !usuario?.is_admin &&
+      !usuario?.routes.prefixes.includes("/users")
+    ) {
       redirect("/404");
     }
-  } , [])
+  }, [usuario]);
 
   useEffect(() => {
     handleGetUsers();
@@ -95,7 +97,8 @@ export default function Usuarios() {
                     <th className="py-2 text-start pl-4"></th>
                     <th className="py-2 text-start">Username</th>
                     <th className="py-2 text-start">Perfil</th>
-                    <th className="py-2 text-start">Rotas</th>
+                    <th className="py-2 text-start">Prefixos</th>
+                    <th className="py-2 text-start">Slugs</th>
                     <th className="py-2 text-end pr-4"></th>
                   </tr>
                 </thead>
@@ -115,14 +118,20 @@ export default function Usuarios() {
                           {user.is_admin ? "Administrador" : "Usuário"}
                         </td>
                         <td className="py-2 text-start">
+                          {user.routes.prefixes.join(" - ")}
+                        </td>
+                        <td className="py-2 text-start">
+                          {user.routes.slugs.join(" - ")}
+                        </td>
+                        {/* <td className="py-2 text-start">
                           {user.is_admin && "Todas"}
                           {!user.is_admin &&
                             user.routes.length === 0 &&
-                            "Nenhuma rota liberada"}
+                            "Nenhum acesso liberado"}
                           {!user.is_admin &&
                             user.routes.length > 0 &&
                             user.routes.join(" - ")}
-                        </td>
+                        </td> */}
                         <td className="py-2 text-end pr-4 flex justify-end items-center gap-4">
                           <Link href={`/configuracoes/usuarios/${user.id}`}>
                             <Tooltip
