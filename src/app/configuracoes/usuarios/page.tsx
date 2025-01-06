@@ -12,6 +12,7 @@ import { redirect } from "next/navigation";
 import { getCookies } from "@/helper/getCookies";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
+import { changeNameRoutes } from "@/lib/ChangeNameRoutes/ChangeNameRoutes";
 
 export default function Usuarios() {
   const [users, setUsers] = useState<any>([]);
@@ -118,7 +119,7 @@ export default function Usuarios() {
                           {user.is_admin ? "Administrador" : "Usuário"}
                         </td>
                         <td className="py-2 text-start">
-                          {user.routes.prefixes.join(" - ")}
+                          {changeNameRoutes(user.routes.prefixes).join(" - ")}
                         </td>
                         <td className="py-2 text-start">
                           {user.routes.slugs.join(" - ")}

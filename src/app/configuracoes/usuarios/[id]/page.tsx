@@ -131,12 +131,12 @@ export default function CadastrarUsuario() {
   }, []);
 
   useEffect(() => {
-    // if (!getCookies("user")) {
-    //   redirect("/login");
-    // }
-    // if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/users")) {
-    //   redirect("/404");
-    // }
+    if (!getCookies("user")) {
+      redirect("/login");
+    }
+    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/users")) {
+      redirect("/404");
+    }
   }, [usuario]);
 
   return (

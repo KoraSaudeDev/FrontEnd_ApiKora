@@ -10,6 +10,7 @@ import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
+import { changeNameRoutes } from "@/lib/ChangeNameRoutes/ChangeNameRoutes";
 
 export default function Acessos() {
   const [access, setAccess] = useState<any>([]);
@@ -75,7 +76,7 @@ export default function Acessos() {
                       <td className="py-2 text-start pl-4">{route.name}</td>
                       <td className="py-2 text-start">{route.slug}</td>
                       <td className="py-2 text-start">
-                        {route.route_prefixes.join(' - ')}
+                        {changeNameRoutes(route.route_prefixes).join(' - ')}
                       </td>
                       <td className="py-2 text-start">{route.route_slugs.join(' - ')}</td>
 

@@ -14,16 +14,17 @@ import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 export default function CadastrarRota() {
   const [isLoading, setIsLoading] = useState(false);
   const [slugs, setSlugs] = useState<any>([]);
+  const [isMounted, setIsMounted] = useState(false);
   const { usuario } = useApplication();
   const router = useRouter();
 
   const routesPrefixOptions = [
     { label: "/verzo", value: "/verzo" },
-    { label: "/routes", value: "/routes" },
-    { label: "/connections", value: "/connections" },
-    { label: "/systems", value: "/systems" },
-    { label: "/users", value: "/users" },
-    { label: "/access", value: "/access" },
+    { label: "/rotas", value: "/routes" },
+    { label: "/conexoes", value: "/connections" },
+    { label: "/agrupamentos", value: "/systems" },
+    { label: "/usuarios", value: "/users" },
+    { label: "/acessos", value: "/access" },
   ];
 
   const {
@@ -36,7 +37,6 @@ export default function CadastrarRota() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     try {
-  
       await api().post("/access/create", data);
 
       alert({
@@ -79,48 +79,98 @@ export default function CadastrarRota() {
     if (!getCookies("user")) {
       redirect("/login");
     }
-  
-    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/access")) {
+
+    if (
+      usuario &&
+      !usuario?.is_admin &&
+      !usuario?.routes.prefixes.includes("/access")
+    ) {
       redirect("/404");
     }
 
     handleGetSlugs();
   }, [usuario]);
 
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   return (
     <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
       <h1 className="text-lg">Cadastrar grupo de acesso</h1>
-
-      <form
-        className="bg-white w-full border p-6 mt-8"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <h2>Informações</h2>
-        <div className="flex gap-4 mt-4">
-          <div className="flex flex-col gap-1 w-1/2">
-            <label className="text-[#3e4676] text-sm font-medium">Nome</label>
-            <input
-              type="text"
-              className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
-              {...register("name", { required: true })}
-            />
-            {errors.name?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">O nome é obrigatório</p>
-            )}
+      {isMounted && (
+        <form
+          className="bg-white w-full border p-6 mt-8"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <h2>Informações</h2>
+          <div className="flex gap-4 mt-4">
+            <div className="flex flex-col gap-1 w-1/2">
+              <label className="text-[#3e4676] text-sm font-medium">Nome</label>
+              <input
+                type="text"
+                className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
+                {...register("name", { required: true })}
+              />
+              {errors.name?.type === "required" && (
+                <p className="text-xs text-red-600 mt-1">
+                  O nome é obrigatório
+                </p>
+              )}
+            </div>
           </div>
-        </div>
-        <div className="flex gap-4 mt-4">
-          <div className="flex flex-col gap-1 w-1/2">
-            <label className="text-[#3e4676] text-sm font-medium">Slugs</label>
-            {slugs && (
+          <div className="flex gap-4 mt-4">
+            <div className="flex flex-col gap-1 w-1/2">
+              <label className="text-[#3e4676] text-sm font-medium">
+                Slugs
+              </label>
+              {slugs && (
+                <Controller
+                  name="route_slugs"
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field }) => (
+                    <Select
+                      {...field}
+                      options={slugs}
+                      isClearable
+                      isMulti
+                      styles={customStyles}
+                      placeholder="Selecione as conexões"
+                      className="w-full"
+                      onChange={(selectedOptions: any) => {
+                        const values = selectedOptions
+                          ? selectedOptions.map((option: any) => option.value)
+                          : [];
+                        field.onChange(values);
+                      }}
+                      value={slugs.filter((option: any) =>
+                        (field.value || []).includes(option.value)
+                      )}
+                    />
+                  )}
+                />
+              )}
+
+              {errors.route_slugs?.type === "required" && (
+                <p className="text-xs text-red-600 mt-1">
+                  As slugs são obrigatórias
+                </p>
+              )}
+            </div>
+            <div className="flex flex-col gap-1 w-1/2">
+              <label className="text-[#3e4676] text-sm font-medium">
+                Prefixos
+              </label>
+
               <Controller
-                name="route_slugs"
+                name="route_prefixes"
                 control={control}
                 rules={{ required: true }}
                 render={({ field }) => (
                   <Select
                     {...field}
-                    options={slugs}
+                    options={routesPrefixOptions}
                     isClearable
                     isMulti
                     styles={customStyles}
@@ -132,76 +182,39 @@ export default function CadastrarRota() {
                         : [];
                       field.onChange(values);
                     }}
-                    value={slugs.filter((option: any) =>
+                    value={routesPrefixOptions.filter((option: any) =>
                       (field.value || []).includes(option.value)
                     )}
                   />
                 )}
               />
-            )}
 
-            {errors.route_slugs?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">
-                As slugs são obrigatórias
-              </p>
-            )}
+              {errors.route_prefixes?.type === "required" && (
+                <p className="text-xs text-red-600 mt-1">
+                  Os prefixos são obrigatórios
+                </p>
+              )}
+            </div>
           </div>
-          <div className="flex flex-col gap-1 w-1/2">
-            <label className="text-[#3e4676] text-sm font-medium">
-              Prefixos
-            </label>
-
-            <Controller
-              name="route_prefixes"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select
-                  {...field}
-                  options={routesPrefixOptions}
-                  isClearable
-                  isMulti
-                  styles={customStyles}
-                  placeholder="Selecione as conexões"
-                  className="w-full"
-                  onChange={(selectedOptions: any) => {
-                    const values = selectedOptions
-                      ? selectedOptions.map((option: any) => option.value)
-                      : [];
-                    field.onChange(values);
-                  }}
-                  value={routesPrefixOptions.filter((option: any) =>
-                    (field.value || []).includes(option.value)
-                  )}
+          <div className="flex justify-end mt-10">
+            <button
+              className="w-[120px] flex justify-center bg-[#28a745] text-white rounded hover:opacity-75 transition-all border-none py-2 px-7 text-sm font-medium mt-4 disabled:bg-gray-400 disabled:cursor-not-allowed ml-auto"
+              disabled={isLoading}
+            >
+              {isLoading && (
+                <Image
+                  src="/images/loading.svg"
+                  alt=""
+                  width={1500}
+                  height={20}
+                  className="h-5 w-fit"
                 />
               )}
-            />
-
-            {errors.route_prefixes?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">
-                Os prefixos são obrigatórios
-              </p>
-            )}
+              {!isLoading && "Enviar"}
+            </button>
           </div>
-        </div>
-        <div className="flex justify-end mt-10">
-          <button
-            className="w-[120px] flex justify-center bg-[#28a745] text-white rounded hover:opacity-75 transition-all border-none py-2 px-7 text-sm font-medium mt-4 disabled:bg-gray-400 disabled:cursor-not-allowed ml-auto"
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <Image
-                src="/images/loading.svg"
-                alt=""
-                width={1500}
-                height={20}
-                className="h-5 w-fit"
-              />
-            )}
-            {!isLoading && "Enviar"}
-          </button>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 }

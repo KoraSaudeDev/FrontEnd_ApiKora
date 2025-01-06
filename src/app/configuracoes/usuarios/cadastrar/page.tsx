@@ -234,7 +234,7 @@ export default function CadastrarUsuario() {
                       isClearable
                       isMulti
                       styles={customStyles}
-                      placeholder="Selecione o perfil"
+                      placeholder="Selecione os acessos"
                       className="w-full"
                       onChange={(selectedOptions: any) => {
                         const values = selectedOptions
