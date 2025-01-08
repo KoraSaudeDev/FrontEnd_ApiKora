@@ -21,7 +21,7 @@ export default function Verzo() {
     if (
       usuario?.is_admin === false &&
       usuario?.routes &&
-      !usuario.routes.includes("/verzo")
+      !usuario.routes.prefixes.includes("/verzo")
     ) {
       redirect("/404");
     }

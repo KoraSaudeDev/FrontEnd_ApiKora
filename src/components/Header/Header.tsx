@@ -16,7 +16,9 @@ type HeaderProps = {
 export default function Header(props: HeaderProps) {
   const { openSidebar, onChangeOpenSidebar } = props;
   const { usuario } = useApplication();
-  const [rotaDeConfiguracao, setRotaDeConfiguracao] = useState<string | null>(null);
+  const [rotaDeConfiguracao, setRotaDeConfiguracao] = useState<string | null>(
+    null
+  );
 
   const showSettings =
     usuario?.is_admin ||
@@ -26,55 +28,62 @@ export default function Header(props: HeaderProps) {
     usuario?.routes.prefixes.includes("/users") ||
     usuario?.routes.prefixes.includes("/access");
 
-    const showRoutes =  usuario?.is_admin || usuario?.routes.slugs.length > 0;
+  const showRoutes =
+    usuario?.is_admin ||
+    (usuario?.routes &&
+      usuario.routes.slugs &&
+      usuario.routes.slugs.length > 0);
 
   const handleLogout = () => {
     removeCookie("user");
     redirect("/login");
   };
 
-  function encontrarRotaDeConfiguracao(rotas:any) {
+  function encontrarRotaDeConfiguracao(rotas: any) {
+    if (rotas === undefined) return;
+    const rotasDeConfiguracao = [
+      "/systems",
+      "/users",
+      "/routes",
+      "/connections",
+      "/access",
+    ];
 
-    if(rotas === undefined) return;
-    const rotasDeConfiguracao = ["/systems", "/users", "/routes", "/connections", "/access"];
-    
     // Verifica se alguma das rotas de configuração está no array fornecido
     for (let i = 0; i < rotas.length; i++) {
       if (rotasDeConfiguracao.includes(rotas[i])) {
-        if(rotas[i] === "/systems") {
+        if (rotas[i] === "/systems") {
           return setRotaDeConfiguracao("/agrupamentos");
         }
 
-        if(rotas[i] === "/routes") {
+        if (rotas[i] === "/routes") {
           return setRotaDeConfiguracao("/slugs");
         }
 
-        if(rotas[i] === "/connections") {
+        if (rotas[i] === "/connections") {
           return setRotaDeConfiguracao("/conexoes");
         }
 
-        if(rotas[i] === "/users") {
+        if (rotas[i] === "/users") {
           return setRotaDeConfiguracao("/usuarios");
         }
 
-        if(rotas[i] === "/access") {
+        if (rotas[i] === "/access") {
           return setRotaDeConfiguracao("/acessos");
         }
       }
     }
-  
+
     return null; // Retorna null caso não encontre nenhuma rota de configuração
   }
 
-
-useEffect(() => {
-  if(usuario?.is_admin) {
-    setRotaDeConfiguracao("/usuarios");
-  } else {
-    encontrarRotaDeConfiguracao(usuario?.routes.prefixes);
-  }
-  
-}, [usuario]);
+  useEffect(() => {
+    if (usuario?.is_admin) {
+      setRotaDeConfiguracao("/usuarios");
+    } else {
+      encontrarRotaDeConfiguracao(usuario?.routes.prefixes);
+    }
+  }, [usuario]);
 
   return (
     <header

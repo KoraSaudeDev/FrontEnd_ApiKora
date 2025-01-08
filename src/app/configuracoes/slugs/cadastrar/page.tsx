@@ -6,7 +6,7 @@ import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import Select from "react-select";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
@@ -18,9 +18,6 @@ export default function CadastrarSlug() {
   const [parameters, setParameters] = useState<any>([]);
   const { usuario } = useApplication();
   const router = useRouter();
-
-  const params = useParams<{ id: string }>();
-  const idSystem = params.id;
 
   const {
     register,

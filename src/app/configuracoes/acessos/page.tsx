@@ -18,7 +18,7 @@ export default function Acessos() {
   const { usuario } = useApplication();
   const [page, setPage] = useState(1);
   const [limit] = useState(10);
-  const [total, setTotal] = useState(0);
+  const [total] = useState(0);
 
   const handleGetUsers = () => {
     api()

@@ -9,8 +9,6 @@ import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { alert } from "@/hooks/use-alert";
 import { IoMdPlay } from "react-icons/io";
 import { LuView } from "react-icons/lu";
 
@@ -22,14 +20,6 @@ export default function Slugs() {
   const [limit] = useState(10);
   const [total, setTotal] = useState(0);
 
-  function formatarData(dataString: string) {
-    const data = new Date(dataString);
-    const dia = String(data.getDate()).padStart(2, "0");
-    const mes = String(data.getMonth() + 1).padStart(2, "0");
-    const ano = data.getFullYear();
-
-    return `${dia}/${mes}/${ano}`;
-  }
 
   const handleGetSlugs = () => {
 

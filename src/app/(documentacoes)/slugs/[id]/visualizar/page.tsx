@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { LuDot } from "react-icons/lu";
 

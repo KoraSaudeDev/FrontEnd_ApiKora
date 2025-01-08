@@ -92,7 +92,7 @@ export default function Sidebar(props: SidebarProps) {
         <p className="text-gray-800">Documentações</p>
       </div>
       <Accordion items={items} defaultValue="Verzo" isHash />
-      {(usuario?.is_admin || usuario?.routes.slugs.length > 0) && (
+      {(usuario?.is_admin || (usuario?.routes?.slugs?.length ?? 0) > 0) && (
         <Link
           href="/slugs"
           className="text-[#284557] data-[active=true]:text-blue-600 pl-3 h-[28px] text-sm font-medium"

@@ -9,8 +9,6 @@ import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { SkeletonTable } from "@/components/Skeleton/SkeletonTable";
 import Pagination from "@/components/Pagination/Pagination";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { alert } from "@/hooks/use-alert";
 import { IoMdPlay } from "react-icons/io";
 
 export default function Slugs() {

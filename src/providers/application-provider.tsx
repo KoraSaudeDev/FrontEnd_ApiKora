@@ -14,13 +14,21 @@ import React, {
  |-----------------------------------------------------------------------------
 */
 
+
+
+type Routes = {
+  prefixes: string[],
+  slugs: any[]
+}
+
 type User = {
   id: number;
   is_admin: boolean;
   username: string;
-  routes: string[]
-}
-
+  routes: Routes;
+  is_active: boolean;
+  accesses: any[]
+};
 
 type ApplicationContext = {
   usuario: User | null;
@@ -58,7 +66,7 @@ export const ApplicationProvider = (props: {
 
   // Functions ---
   function init(data: User) {
-   return  data && setUsuario(data);
+    return data && setUsuario(data);
   }
 
   // Context ---

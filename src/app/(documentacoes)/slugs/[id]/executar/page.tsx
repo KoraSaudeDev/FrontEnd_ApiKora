@@ -1,14 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Controller, set, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useParams } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
-import Select, { StylesConfig } from "react-select";
+import Select from "react-select";
 import ReactJson from "react-json-view";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
@@ -19,7 +19,6 @@ export default function ExecutarQuery() {
   const [slug, setSlug] = useState<string | null>(null);
   const [parameters, setParameters] = useState<any>([]);
   const { usuario } = useApplication();
-  const router = useRouter();
 
   const params = useParams<{ id: string }>();
   const idQuery = params.id;
