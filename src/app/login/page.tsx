@@ -29,7 +29,7 @@ export default function Login() {
     api()
       .post("auth/login", user)
       .then((res) => {
-        document.cookie = `user=${res.data.token}; path=/; max-age=3600; secure;`;
+        document.cookie = `user=${res.data.token}; path=/; max-age=3600;`;
         if (res?.status === 200) {
           return router.push("/inicio");
         }
