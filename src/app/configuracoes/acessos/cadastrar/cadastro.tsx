@@ -11,7 +11,7 @@ import { useApplication } from "@/providers/application-provider";
 import Select from "react-select";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function CadastrarRota() {
+export default function CadastrarAcesso() {
   const [isLoading, setIsLoading] = useState(false);
   const [slugs, setSlugs] = useState<any>([]);
   const [isMounted, setIsMounted] = useState(false);
@@ -96,8 +96,8 @@ export default function CadastrarRota() {
   }, []);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Cadastrar grupo de acesso</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Cadastrar grupo de acesso</h1>
       {isMounted && (
         <form
           className="bg-white w-full border p-6 mt-8"

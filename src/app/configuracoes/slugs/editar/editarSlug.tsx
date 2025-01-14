@@ -5,24 +5,28 @@ import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import { getCookies } from "@/helper/getCookies";
-import { redirect, useRouter } from "next/navigation";
-import { useApplication } from "@/providers/application-provider";
+import {  useRouter } from "next/navigation";
 import Select from "react-select";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function CadastrarSlug() {
+type EditarSlugProps = {
+  idQuery: number | null;
+};
+
+export default function EditarSlug(props: EditarSlugProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [grouping, setGrouping] = useState<any>(null);
   const [connections, setConnections] = useState<any>(null);
   const [parameters, setParameters] = useState<any>([]);
-  const { usuario } = useApplication();
   const router = useRouter();
+
+  const { idQuery } = props;
 
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     formState: { errors },
   } = useForm();
 
@@ -43,12 +47,12 @@ export default function CadastrarSlug() {
         ...dataValues,
         parameters,
       };
-      await api().post("/routes/create", data);
+      await api().put(`/routes/edit/${idQuery}`, data);
 
       alert({
         intent: "success",
-        title: "Query criada!",
-        text: "Query criada com sucesso",
+        title: "Query editada!",
+        text: "Query editada com sucesso",
         withClose: false,
       });
 
@@ -131,24 +135,38 @@ export default function CadastrarSlug() {
     setParameters(newParameters);
   }
 
-  useEffect(() => {
-    if (!getCookies("user")) {
-      redirect("/login");
-    }
-  
-    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/routes")) {
-      redirect("/404");
-    }
-  },[usuario]);
+  const handleGetConnection = () => {
+    api()
+      .get(`routes/profile/${idQuery}`)
+      .then((res) => {
+        const connection = res.data.route;
+        setValue("name", connection.name);
+        setValue("query",connection.query.replace(":", "@") )
+        setParameters(connection.parameters)
+        if(connection.systems.length > 0) {
+          setValue("system_id", connection.systems[0].id);
+        }
+     
+
+        const transformedIds = connection.connections.map(
+            (item: { id: string }) => item.id
+          );
+
+          setValue("connection_ids",transformedIds )
+
+      })
+      .catch(() => console.log("Não foi possivel buscar as slugs"));
+  };
 
   useEffect(() => {
     handleGetGrouping();
     handleGetConnections();
+    handleGetConnection()
   }, []);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Cadastrar query</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Editar slug</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"
@@ -173,9 +191,8 @@ export default function CadastrarSlug() {
             </label>
             {grouping && (
               <Controller
-                name="group_id"
+                name="system_id"
                 control={control}
-                rules={{ required: true }}
                 render={({ field }) => (
                   <Select
                     {...field}
@@ -185,7 +202,7 @@ export default function CadastrarSlug() {
                     placeholder="Selecione um agrupamento"
                     className="w-full"
                     value={grouping.find(
-                      (option:any) => option.value === field.value
+                      (option: any) => option.value === field.value
                     )}
                     onChange={(selectedOption: any) => {
                       field.onChange(
@@ -195,12 +212,6 @@ export default function CadastrarSlug() {
                   />
                 )}
               />
-            )}
-
-            {errors.connection_ids?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">
-                As conexões são obrigatórias
-              </p>
             )}
           </div>
         </div>
@@ -221,7 +232,7 @@ export default function CadastrarSlug() {
                     isClearable
                     isMulti
                     styles={customStyles}
-                    placeholder="Selecione um agrupamento"
+                    placeholder="Selecione as conexões"
                     className="w-full"
                     onChange={(selectedOptions: any) => {
                       const values = selectedOptions
@@ -267,7 +278,7 @@ export default function CadastrarSlug() {
             />
             {errors.query?.type === "required" && (
               <p className="text-xs text-red-600 mt-1">
-                O prefixo é obrigatório
+                A query é obrigatória
               </p>
             )}
           </div>
@@ -279,7 +290,7 @@ export default function CadastrarSlug() {
               <div className="flex gap-4">
                 <div className="w-full flex flex-col gap-1">
                   <label className="text-[#3e4676] text-sm font-medium">
-                    Tipo
+                    Tipo - {parameters[index].type}
                   </label>
                   <Select
                     options={parameterType}
@@ -287,6 +298,9 @@ export default function CadastrarSlug() {
                     styles={customStyles}
                     placeholder="Selecione tipo"
                     className="w-full"
+                    value={parameterType.find(
+                      (option) => option.value === parameters[index].type
+                    )}
                     onChange={(selectedOptions: any) => {
                       const updatedParameters = [...parameters];
                       updatedParameters[index] = {
@@ -385,7 +399,7 @@ export default function CadastrarSlug() {
                 className="h-5 w-fit"
               />
             )}
-            {!isLoading && "Enviar"}
+            {!isLoading && "Salvar"}
           </button>
         </div>
       </form>

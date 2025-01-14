@@ -1,18 +1,24 @@
 "use client";
 
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
-import Select from "react-select";
-import ReactJson from "react-json-view";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function ExecutarQuery() {
+const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
+const Select = dynamic(() => import('react-select'), { ssr: false });
+
+type ExecutarQueryProps = {
+  idQuery: number | null;
+};
+
+export default function ExecutarQuery(props: ExecutarQueryProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [connections, setConnections] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
@@ -20,8 +26,8 @@ export default function ExecutarQuery() {
   const [parameters, setParameters] = useState<any>([]);
   const { usuario } = useApplication();
 
-  const params = useParams<{ id_query: string }>();
-  const idQuery = params.id_query;
+  const { idQuery } = props;
+
 
   const parameterTypeBoolean = [
     { label: "Verdadeiro", value: true },
@@ -45,20 +51,6 @@ export default function ExecutarQuery() {
       setResult(result.data.data);
 
       setIsLoading(false);
-
-      //   console.log(validate.data.status);
-
-      // alert({
-      //   intent: "success",
-      //   title: "Rota exe!",
-      //   text: "Rota criada com sucesso",
-      //   withClose: false,
-      // });
-
-      //   setIsLoading(false);
-      //   router.push("/configuracoes/rotas");
-
-      //   setTimeout(() => window.location.reload(), 1000);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
       alert({
@@ -72,17 +64,32 @@ export default function ExecutarQuery() {
   };
 
   const handleGetParametersAndSlug = async () => {
-    try {
-      const data = await api().get(`/routes/profile/${idQuery}`);
+    if (usuario && !usuario?.is_admin) {
+      const item = usuario?.routes.slugs.find((item) => item.id == idQuery);
 
-      const transformedIds = data.data.route.connections.map(
+      const transformedIds = item.connections.map(
         (item: { slug: string }) => item.slug
       );
+
+      console.log(transformedIds, "user");
       setValue("connections", transformedIds);
-      setSlug(data.data.route.slug);
-      setParameters(data.data.route.parameters);
-    } catch (error) {
-      console.error("Erro ao buscar parâmetros:", error);
+      setParameters(item.parameters);
+      setSlug(item.slug);
+    }
+
+    if (usuario && usuario?.is_admin) {
+      try {
+        const data = await api().get(`/routes/profile/${idQuery}`);
+
+        const transformedIds = data.data.route.connections.map(
+          (item: { slug: string }) => item.slug
+        );
+        setValue("connections", transformedIds);
+        setSlug(data.data.route.slug);
+        setParameters(data.data.route.parameters);
+      } catch (error) {
+        console.error("Erro ao buscar parâmetros:", error);
+      }
     }
   };
 
@@ -96,32 +103,42 @@ export default function ExecutarQuery() {
           return { label: item.slug, value: item.slug };
         });
 
+        console.log(res.data.connections, "connections");
+
         setConnections(transformedIds);
       })
       .catch(() => console.log("Não foi possivel buscar as conexões"));
   };
 
   useEffect(() => {
+    // if (!getCookies("user")) {
+    //   redirect("/login");
+    // }
+
+    // if (
+    //   usuario &&
+    //   !usuario?.is_admin &&
+    //   !usuario?.routes.prefixes.includes("/routes")
+    // ) {
+    //   redirect("/404");
+    // }
+    handleGetParametersAndSlug();
+  }, [usuario]);
+
+  useEffect(() => {
     if (!getCookies("user")) {
       redirect("/login");
     }
 
-    if (
-      usuario &&
-      !usuario?.is_admin &&
-      !usuario?.routes.prefixes.includes("/routes")
-    ) {
+    if (usuario && !usuario?.is_admin && usuario?.routes.slugs.length === 0) {
       redirect("/404");
     }
-  }, [usuario]);
 
-  useEffect(() => {
-    handleGetParametersAndSlug();
     handleGetConnections();
   }, []);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
       <h1 className="text-lg">Executar query</h1>
 
       <form

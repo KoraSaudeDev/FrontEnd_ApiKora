@@ -7,12 +7,21 @@ import { useForm, Controller } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import { useApplication } from "@/providers/application-provider";
 import { redirect, useRouter } from "next/navigation";
+import React from "react";
+import { useApplication } from "@/providers/application-provider";
 import { getCookies } from "@/helper/getCookies";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function CadastrarUsuario() {
+type EditarUsuarioProps = {
+  idUser: number | null;
+};
+
+export default function EditarUsuario(props: EditarUsuarioProps) {
+  const { idUser } = props;
+
+  const { usuario } = useApplication();
+
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -21,24 +30,28 @@ export default function CadastrarUsuario() {
     { value: "administrador", label: "Administrador" },
     { value: "usuario", label: "Usuário" },
   ];
-
-  const { usuario } = useApplication();
   const router = useRouter();
-
   const {
     register,
     handleSubmit,
     control,
+    setValue,
     watch,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      username: "",
+      password: "",
+      confirmPassword: "",
+      profile: "",
+      access_ids: [] as any,
+    },
+  });
 
   const values = watch(["password", "profile"]);
   const isUserProfile = values[1] === "usuario";
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log(data);
     setIsLoading(true);
     try {
       const user = {
@@ -47,22 +60,21 @@ export default function CadastrarUsuario() {
         is_admin: data.profile === "administrador",
       };
 
-     const responseUser = await api().post("users/create", user);
+      const responseUser = await api().put(`users/edit/${idUser}`, user);
 
-     if(data.profile === "usuario") {
-      const userAccess = {
-        user_id: responseUser.data.user_id,
-        access_ids: data.access_ids,
-      };
+      if (data.profile === "usuario") {
+        const userAccess = {
+          user_id: responseUser.data.user_id,
+          access_ids: data.access_ids,
+        };
 
-      await api().post("/access/user/create", userAccess);
-     }
-
+        await api().put("/access/user/edit", userAccess);
+      }
 
       alert({
         intent: "success",
-        title: "Usuário criado!",
-        text: "Usuário criado com sucesso",
+        title: "Usuário editado!",
+        text: "Usuário editado com sucesso",
         withClose: false,
       });
       setIsLoading(false);
@@ -76,7 +88,7 @@ export default function CadastrarUsuario() {
       alert({
         intent: "error",
         title: "Erro!",
-        text: "Erro ao criar usuário",
+        text: "Erro ao editar usuário",
         withClose: true,
       });
       setIsLoading(false);
@@ -96,22 +108,45 @@ export default function CadastrarUsuario() {
       .catch(() => console.log("Não foi possivel buscar os usuários"));
   };
 
+  const handleGetUser = () => {
+    api()
+      .get(`users/profile/${idUser}`)
+      .then((res) => {
+        const user = res.data.user;
+        setValue("username", user.username);
+        setValue("profile", user.is_admin ? "administrador" : "usuario");
+
+        const transformedIds = user.accesses.map(
+          (item: { access_id: string }) => item.access_id
+        );
+        console.log(user.accesses, "user");
+        setValue("access_ids", transformedIds);
+      })
+      .catch(() => console.log("Não foi possivel buscar os usuários"));
+  };
+
   useEffect(() => {
     setIsMounted(true);
     handleGetRoutes();
+    handleGetUser();
+  }, []);
 
-    if (usuario && !usuario?.is_admin && !usuario?.routes.prefixes.includes("/users")) {
-      redirect("/404");
-    }
-
+  useEffect(() => {
     if (!getCookies("user")) {
       redirect("/login");
     }
-  }, []);
+    if (
+      usuario &&
+      !usuario?.is_admin &&
+      !usuario?.routes.prefixes.includes("/users")
+    ) {
+      redirect("/404");
+    }
+  }, [usuario]);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Cadastrar usuário</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Editar usuário</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"
@@ -123,7 +158,7 @@ export default function CadastrarUsuario() {
             <label className="text-[#3e4676] text-sm font-medium">Nome</label>
             <input
               type="text"
-              className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
+              className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
               {...register("username", { required: true })}
             />
             {errors.username?.type === "required" && (
@@ -135,8 +170,8 @@ export default function CadastrarUsuario() {
             <div className=" relative">
               <input
                 type={showPassword ? "text" : "password"}
-                className="border w-full border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
-                {...register("password", { required: true })}
+                className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
+                {...register("password")}
               />
               <div
                 className="absolute top-2.5 right-4 cursor-pointer hover:opacity-75 transition-all"
@@ -144,11 +179,6 @@ export default function CadastrarUsuario() {
               >
                 {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
               </div>
-              {errors.password?.type === "required" && (
-                <p className="text-xs text-red-600 mt-1">
-                  A senha é obrigatória
-                </p>
-              )}
             </div>
           </div>
           <div className="w-full flex flex-col gap-1">
@@ -160,8 +190,12 @@ export default function CadastrarUsuario() {
                 type={showPassword ? "text" : "password"}
                 className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                 {...register("confirmPassword", {
-                  required: true,
-                  validate: (value) => value === values[0],
+                  validate: (value) => {
+                    if (values[0]) {
+                      return value === values[0];
+                    }
+                    return true;
+                  },
                 })}
               />
               <div
@@ -184,7 +218,7 @@ export default function CadastrarUsuario() {
           </div>
         </div>
         {isMounted && (
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="flex gap-4 mt-4 w-[66.3%]">
             <div className="w-full flex flex-col gap-1">
               <label className="text-[#3e4676] text-sm font-medium">
                 Perfil
@@ -200,7 +234,9 @@ export default function CadastrarUsuario() {
                     isClearable
                     styles={customStyles}
                     placeholder="Selecione o perfil"
-                    className="w-full"
+                    className={`${
+                      isUserProfile ? "w-full" : "w-[calc(50%-8px)]"
+                    }`}
                     value={optionsProfile.find(
                       (option) => option.value === field.value
                     )}
@@ -218,14 +254,16 @@ export default function CadastrarUsuario() {
                 </p>
               )}
             </div>
+
             {isUserProfile && (
               <div className="w-full flex flex-col gap-1">
                 <label className="text-[#3e4676] text-sm font-medium">
                   Acessos
                 </label>
+
                 <Controller
                   name="access_ids"
-                  rules={{ required: true }}
+                  // rules={{ required: isUserProfile && true }}
                   control={control}
                   render={({ field }) => (
                     <Select
@@ -245,13 +283,12 @@ export default function CadastrarUsuario() {
                       value={access.filter((option: any) =>
                         (field.value || []).includes(option.value)
                       )}
-                    
                     />
                   )}
                 />
                 {errors.access_ids?.type === "required" && (
                   <p className="text-xs text-red-600 mt-1">
-                    Os acessos são obrigatórios
+                    As rotas são obrigatórias
                   </p>
                 )}
               </div>

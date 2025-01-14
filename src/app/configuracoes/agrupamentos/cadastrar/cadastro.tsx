@@ -59,8 +59,8 @@ export default function CadastrarAgrupamento() {
   }, [usuario]);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Cadastrar agrupamento</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Cadastrar agrupamento</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"

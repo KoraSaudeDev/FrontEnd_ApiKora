@@ -1,27 +1,27 @@
-"use client";
-
+import dynamic from 'next/dynamic';
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams } from "next/navigation";
-import { useApplication } from "@/providers/application-provider";
-import Select from "react-select";
-import ReactJson from "react-json-view";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-export default function ExecutarQuery() {
+const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
+const Select = dynamic(() => import('react-select'), { ssr: false });
+
+type ExecutarQueryProps = {
+  idQuery: number | null;
+};
+
+export default function ExecutarQuery(props: ExecutarQueryProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [connections, setConnections] = useState<any>(null);
   const [result, setResult] = useState<any>(null);
   const [slug, setSlug] = useState<string | null>(null);
   const [parameters, setParameters] = useState<any>([]);
-  const { usuario } = useApplication();
+  const [isClient, setIsClient] = useState(false); // Garantir execução no cliente
 
-  const params = useParams<{ id: string }>();
-  const idQuery = params.id;
+  const { idQuery } = props;
 
   const parameterTypeBoolean = [
     { label: "Verdadeiro", value: true },
@@ -37,13 +37,9 @@ export default function ExecutarQuery() {
       ...data,
     };
 
-    console.log(dados);
     try {
       const result = await api().post(`/routes/execute/${slug}`, dados);
-
-      console.log(result.data.data);
       setResult(result.data.data);
-
       setIsLoading(false);
     } catch (error) {
       console.error("Erro ao submeter dados:", error);
@@ -58,32 +54,17 @@ export default function ExecutarQuery() {
   };
 
   const handleGetParametersAndSlug = async () => {
-    if (usuario && !usuario?.is_admin) {
-      const item = usuario?.routes.slugs.find((item) => item.id == idQuery);
+    try {
+      const data = await api().get(`/routes/profile/${idQuery}`);
 
-      const transformedIds = item.connections.map(
+      const transformedIds = data.data.route.connections.map(
         (item: { slug: string }) => item.slug
       );
-
-      console.log(transformedIds, "user");
       setValue("connections", transformedIds);
-      setParameters(item.parameters);
-      setSlug(item.slug);
-    }
-
-    if (usuario && usuario?.is_admin) {
-      try {
-        const data = await api().get(`/routes/profile/${idQuery}`);
-
-        const transformedIds = data.data.route.connections.map(
-          (item: { slug: string }) => item.slug
-        );
-        setValue("connections", transformedIds);
-        setSlug(data.data.route.slug);
-        setParameters(data.data.route.parameters);
-      } catch (error) {
-        console.error("Erro ao buscar parâmetros:", error);
-      }
+      setSlug(data.data.route.slug);
+      setParameters(data.data.route.parameters);
+    } catch (error) {
+      console.error("Erro ao buscar parâmetros:", error);
     }
   };
 
@@ -91,49 +72,26 @@ export default function ExecutarQuery() {
     api()
       .get(`/connections/list-simple`)
       .then((res) => {
-        console.log(res);
-
         const transformedIds = res.data.connections.map((item: any) => {
           return { label: item.slug, value: item.slug };
         });
-
-        console.log(res.data.connections, "connections");
-
         setConnections(transformedIds);
       })
       .catch(() => console.log("Não foi possivel buscar as conexões"));
   };
 
   useEffect(() => {
-    // if (!getCookies("user")) {
-    //   redirect("/login");
-    // }
-
-    // if (
-    //   usuario &&
-    //   !usuario?.is_admin &&
-    //   !usuario?.routes.prefixes.includes("/routes")
-    // ) {
-    //   redirect("/404");
-    // }
+    setIsClient(true); // Definir que o componente foi montado no cliente
     handleGetParametersAndSlug();
-  }, [usuario]);
-
-  useEffect(() => {
-    if (!getCookies("user")) {
-      redirect("/login");
-    }
-
-    if (usuario && !usuario?.is_admin && usuario?.routes.slugs.length === 0) {
-      redirect("/404");
-    }
-
     handleGetConnections();
   }, []);
 
+  // Não renderiza o conteúdo até o componente estar montado no cliente
+  if (!isClient) return <div>Loading...</div>;
+
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Executar query</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Executar query</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"

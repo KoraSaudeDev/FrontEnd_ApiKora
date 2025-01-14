@@ -6,15 +6,20 @@ import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams, useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 
-export default function EditarAgrupamento() {
+
+type EditarAgrupamentoProps = {
+  idGroup: number | null;
+};
+
+export default function EditarAgrupamento(props: EditarAgrupamentoProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { usuario } = useApplication();
   const router = useRouter();
-  const params = useParams<{ id: string }>()
-  const idGroup = params.id
+
+  const {idGroup} = props;
 
   const {
     register,
@@ -76,8 +81,8 @@ export default function EditarAgrupamento() {
   }, [usuario]);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
-      <h1 className="text-lg">Editar agrupamento</h1>
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
+      <h1 className="text-2xl text-[#3e4676]">Editar agrupamento</h1>
 
       <form
         className="bg-white w-full border p-6 mt-8"

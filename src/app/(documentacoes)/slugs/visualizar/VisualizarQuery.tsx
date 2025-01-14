@@ -3,16 +3,19 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/axios";
 import { getCookies } from "@/helper/getCookies";
-import { redirect, useParams } from "next/navigation";
+import { redirect } from "next/navigation";
 import { useApplication } from "@/providers/application-provider";
 import { LuDot } from "react-icons/lu";
 
-export default function VisualizarQuery() {
+type VisualizarQueryProps = {
+  idQuery: number | null;
+};
+
+export default function VisualizarQuery(props: VisualizarQueryProps) {
   const [route, setRoute] = useState<any>(null);
   const { usuario } = useApplication();
 
-  const params = useParams<{ id: string }>();
-  const idQuery = params.id;
+  const { idQuery } = props;
 
   const handleGetQuery = async () => {
     if (!usuario?.is_admin) {
@@ -39,7 +42,7 @@ export default function VisualizarQuery() {
   }, [usuario]);
 
   return (
-    <div className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
+    <div className="overflow-auto w-full h-full p-8 scroll-smooth">
       <h1 className="text-lg">Visualizar query</h1>
       {route && (
         <div className="bg-white w-full border p-6 mt-8">
