@@ -77,6 +77,7 @@ export default function CadastrarConexao() {
   ];
 
   const optionsWithHost = [
+    "mysql",
     "redis",
     "mariadb",
     "oracle",
@@ -285,23 +286,6 @@ export default function CadastrarConexao() {
                 )}
               </div>
             )}
-            {isHost(values[1]) && (
-              <div className="w-full flex flex-col gap-1">
-                <label className="text-[#3e4676] text-sm font-medium">
-                  Host
-                </label>
-                <input
-                  type="text"
-                  className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
-                  {...register("host", { required: true })}
-                />
-                {errors.host?.type === "required" && (
-                  <p className="text-xs text-red-600 mt-1">
-                    O host é obrigatório
-                  </p>
-                )}
-              </div>
-            )}
 
             {isPort(values[1]) && (
               <div className="w-full flex flex-col gap-1">
@@ -343,29 +327,29 @@ export default function CadastrarConexao() {
             )}
 
             {isPassword(values[1]) && (
-                <div className="w-full flex flex-col gap-1">
-                  <label className="text-[#3e4676] text-sm font-medium">
-                    Senha
-                  </label>
-                  <div className=" relative">
-                    <input
-                      type={showPassword ? "text" : "password"}
-                      className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
-                      {...register("password", { required: true })}
-                    />
-                    <div
-                      className="absolute top-2.5 right-4 cursor-pointer hover:opacity-75 transition-all"
-                      onClick={() => setShowPassword((prevState) => !prevState)}
-                    >
-                      {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
-                    </div>
-                    {errors.password?.type === "required" && (
-                      <p className="text-xs text-red-600 mt-1">
-                        A senha é obrigatória
-                      </p>
-                    )}
+              <div className="w-full flex flex-col gap-1">
+                <label className="text-[#3e4676] text-sm font-medium">
+                  Senha
+                </label>
+                <div className=" relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    className="border w-full border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
+                    {...register("password", { required: true })}
+                  />
+                  <div
+                    className="absolute top-2.5 right-4 cursor-pointer hover:opacity-75 transition-all"
+                    onClick={() => setShowPassword((prevState) => !prevState)}
+                  >
+                    {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
                   </div>
+                  {errors.password?.type === "required" && (
+                    <p className="text-xs text-red-600 mt-1">
+                      A senha é obrigatória
+                    </p>
+                  )}
                 </div>
+              </div>
             )}
           </div>
 
@@ -401,6 +385,22 @@ export default function CadastrarConexao() {
                   </p>
                 )}
               </div>
+            </div>
+          )}
+
+          {isHost(values[1]) && (
+            <div className="w-full flex flex-col gap-1 mt-3">
+              <label className="text-[#3e4676] text-sm font-medium">Host</label>
+              <input
+                type="text"
+                className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
+                {...register("host", { required: true })}
+              />
+              {errors.host?.type === "required" && (
+                <p className="text-xs text-red-600 mt-1">
+                  O host é obrigatório
+                </p>
+              )}
             </div>
           )}
 
