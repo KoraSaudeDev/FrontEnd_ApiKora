@@ -311,7 +311,7 @@ export default function CadastrarConexao() {
                   Nome do banco de dados
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                   {...register("database_name", {
                     required: true,

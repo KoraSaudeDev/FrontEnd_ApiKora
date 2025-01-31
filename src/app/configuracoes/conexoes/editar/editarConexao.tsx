@@ -82,6 +82,7 @@ export default function EditarConexao(props: EditarConexaoProps) {
   ];
 
   const optionsWithHost = [
+    "mysql",
     "redis",
     "mariadb",
     "oracle",
@@ -186,17 +187,15 @@ export default function EditarConexao(props: EditarConexaoProps) {
         setValue("port", connection.port);
         setValue("host", connection.host);
 
-        if(connection.db_type === "oracle" && connection.sid) {
-          setValue("db_type_oracle", "sid")
-          setValue("sid", connection.sid)
+        if (connection.db_type === "oracle" && connection.sid) {
+          setValue("db_type_oracle", "sid");
+          setValue("sid", connection.sid);
         }
 
-        if(connection.db_type === "oracle" && connection.service_name) {
-          setValue("db_type_oracle", "service_name")
-          setValue("service_name", connection.service_name)
+        if (connection.db_type === "oracle" && connection.service_name) {
+          setValue("db_type_oracle", "service_name");
+          setValue("service_name", connection.service_name);
         }
-
-          
 
         // const transformedDbType = connection.db_type.map(
         //   (item: { db_type: string }) => item.db_type
@@ -271,7 +270,6 @@ export default function EditarConexao(props: EditarConexaoProps) {
                 </p>
               )}
             </div>
-
           </div>
 
           <div className="flex gap-4 mt-4">
@@ -288,23 +286,6 @@ export default function EditarConexao(props: EditarConexaoProps) {
                 {errors.username?.type === "required" && (
                   <p className="text-xs text-red-600 mt-1">
                     O username é obrigatório
-                  </p>
-                )}
-              </div>
-            )}
-            {isHost(values[1]) && (
-              <div className="w-full flex flex-col gap-1">
-                <label className="text-[#3e4676] text-sm font-medium">
-                  Host
-                </label>
-                <input
-                  type="text"
-                  className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
-                  {...register("host", { required: true })}
-                />
-                {errors.host?.type === "required" && (
-                  <p className="text-xs text-red-600 mt-1">
-                    O host é obrigatório
                   </p>
                 )}
               </div>
@@ -334,7 +315,7 @@ export default function EditarConexao(props: EditarConexaoProps) {
                   Nome do banco de dados
                 </label>
                 <input
-                  type="number"
+                  type="text"
                   className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
                   {...register("database_name", {
                     required: true,
@@ -408,6 +389,22 @@ export default function EditarConexao(props: EditarConexaoProps) {
                   </p>
                 )}
               </div>
+            </div>
+          )}
+
+          {isHost(values[1]) && (
+            <div className="w-full flex flex-col gap-1">
+              <label className="text-[#3e4676] text-sm font-medium">Host</label>
+              <input
+                type="text"
+                className="border border-[#ddd] rounded px-2 py-[5px]  focus-visible:outline-none focus-visible:border-[#007aff]"
+                {...register("host", { required: true })}
+              />
+              {errors.host?.type === "required" && (
+                <p className="text-xs text-red-600 mt-1">
+                  O host é obrigatório
+                </p>
+              )}
             </div>
           )}
 
