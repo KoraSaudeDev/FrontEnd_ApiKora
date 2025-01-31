@@ -20,6 +20,7 @@ export default function CadastrarAcesso() {
 
   const routesPrefixOptions = [
     { label: "/verzo", value: "/verzo" },
+    { label: "/depara", value: "/depara" },
     { label: "/rotas", value: "/routes" },
     { label: "/conexoes", value: "/connections" },
     { label: "/agrupamentos", value: "/systems" },
