@@ -97,39 +97,45 @@ export default function Header(props: HeaderProps) {
         onClick={onChangeOpenSidebar}
       />
 
-      <div className="flex items-center gap-4">
-        {showRoutes && (
-          <Tooltip
-            side="bottom"
-            text="Executar rotas"
-            trigger={
-              <Link href="/slugs" className="pr-2">
-                <IoMdPlay className="text-white" size={22} />
-              </Link>
-            }
-          />
+      {usuario &&
+        !usuario.is_admin &&
+        usuario.routes &&
+        !usuario.routes.prefixes.includes("/depara") && (
+          <div className="flex items-center gap-4">
+            {showRoutes && (
+              <Tooltip
+                side="bottom"
+                text="Executar rotas"
+                trigger={
+                  <Link href="/slugs" className="pr-2">
+                    <IoMdPlay className="text-white" size={22} />
+                  </Link>
+                }
+              />
+            )}
+            {showSettings && (
+              <Tooltip
+                side="bottom"
+                text="Configurações"
+                trigger={
+                  <Link
+                    href={`/configuracoes${rotaDeConfiguracao}`}
+                    className="border-r border-r-white pr-4"
+                  >
+                    <IoSettingsOutline className="text-white" size={22} />
+                  </Link>
+                }
+              />
+            )}
+          </div>
         )}
-        {showSettings && (
-          <Tooltip
-            side="bottom"
-            text="Configurações"
-            trigger={
-              <Link
-                href={`/configuracoes${rotaDeConfiguracao}`}
-                className="border-r border-r-white pr-4"
-              >
-                <IoSettingsOutline className="text-white" size={22} />
-              </Link>
-            }
-          />
-        )}
-        <div
-          className="text-white items-center flex gap-2 mr-4 cursor-pointer"
-          onClick={handleLogout}
-        >
-          Sair
-          <MdLogout className="text-white" size={22} />
-        </div>
+
+      <div
+        className="text-white items-center flex gap-2 mr-4 cursor-pointer"
+        onClick={handleLogout}
+      >
+        Sair
+        <MdLogout className="text-white" size={22} />
       </div>
     </header>
   );

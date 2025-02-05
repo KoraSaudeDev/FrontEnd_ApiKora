@@ -7,3 +7,41 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+.sc-gyycJP {
+  width: 100%;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
+nextjs-portal {
+  display: none !important;
+}
+
+.dePara ul {
+  position: relative;
+} 
+.dePara li {
+  font-size: 14px;
+  margin-bottom: 10px;
+  padding-left: 25px;
+  
+}
+
+.dePara li::before {
+  position: absolute;
+  left: 0;
+  content: "";
+  display: block;
+  flex: 0 0 auto;
+  height: 14px;
+  width: 14px;
+  background: #284557;
+  margin-top: 3px;
+  border: 3.5px solid #d6ebff;
+  border-radius: 100%;
+}

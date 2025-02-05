@@ -44,7 +44,7 @@ export default function Slugs() {
       redirect("/login");
     }
 
-    if (usuario && !usuario?.is_admin && usuario?.routes.slugs.length === 0) {
+    if (usuario && !usuario?.is_admin) {
       redirect("/404");
     }
   }, [usuario]);

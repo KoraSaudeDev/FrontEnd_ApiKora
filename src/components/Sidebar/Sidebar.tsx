@@ -2,8 +2,7 @@ import Accordion from "../Accordion/Accordion";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useApplication } from "@/providers/application-provider";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 
 type SidebarProps = {
   openSidebar: boolean;
@@ -13,9 +12,9 @@ export default function Sidebar(props: SidebarProps) {
   const { openSidebar } = props;
   const { usuario } = useApplication();
   const [items, setItems] = useState<any>([]);
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
-  const handleAddVerzo = () => {
+  const handleAddItens = () => {
     if (usuario) {
       // Verifica se o usuário é admin ou se tem a rota /verzo
       if (usuario.is_admin) {
@@ -40,7 +39,6 @@ export default function Sidebar(props: SidebarProps) {
         usuario.routes &&
         usuario.routes.prefixes.includes("/verzo")
       ) {
-        console.log("entrou");
         return setItems([
           {
             item: "Verzo",
@@ -57,19 +55,41 @@ export default function Sidebar(props: SidebarProps) {
             ],
           },
         ]);
+      } else if (
+        !usuario.is_admin &&
+        usuario.routes &&
+        usuario.routes.prefixes.includes("/depara")
+      ) {
+        return setItems([
+          {
+            item: "DePara",
+            children: [
+              { label: "Sobre", path: "/dePara#sobre", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/dePara#autenticacao",
+                isShow: true,
+              },
+              { label: "Uso",   path: "/dePara#uso", isShow: true },
+              { label: "Exemplos", path: "/dePara#exemplos", isShow: true },
+            ],
+          },
+        ]);
       }
     }
   };
 
-  const containsWordInPathname = (word: string): boolean => {
-    return pathname.includes(word);
-  };
+  // const containsWordInPathname = (word: string): boolean => {
+  //   return pathname.includes(word);
+  // };
 
   useEffect(() => {
     if (items.length === 0) {
-      handleAddVerzo();
+      handleAddItens();
     }
   }, [usuario]);
+
+  console.log(usuario);
 
   return (
     <div
@@ -85,14 +105,15 @@ export default function Sidebar(props: SidebarProps) {
         <Image src="/images/logokora.webp" alt="" width={132} height={30} />
       </div>
 
+
       <div className="flex flex-col gap-3 items-center mt-10 mb-5 w-[230px]">
         <div className="bg-green-500 text-white size-12 rounded-full flex justify-center items-center font-medium">
           K
         </div>
         <p className="text-gray-800">Documentações</p>
       </div>
-      <Accordion items={items} defaultValue="Verzo" isHash />
-      {(usuario?.is_admin || (usuario?.routes?.slugs?.length ?? 0) > 0) && (
+      <Accordion items={items} defaultValue="DePara" isHash />
+      {/* {(usuario?.is_admin || (usuario?.routes?.slugs?.length ?? 0) > 0) && (
         <Link
           href="/slugs"
           className="text-[#284557] data-[active=true]:text-blue-600 pl-3 h-[28px] text-sm font-medium"
@@ -100,7 +121,7 @@ export default function Sidebar(props: SidebarProps) {
         >
           Slugs
         </Link>
-      )}
+      )} */}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export default function Verzo() {
     ) {
       redirect("/404");
     }
-  }, []);
+  }, [usuario]);
   return (
     <main className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth">
       <section id="sobre" className="pt-2">
@@ -49,7 +49,7 @@ export default function Verzo() {
           width={500}
           height={300}
           layout="responsive"
-          className="mb-2"
+          className="mb-2 !w-[1000px]"
         />
       </section>
       <section id="api" className="pt-2">
@@ -99,7 +99,7 @@ export default function Verzo() {
           width={500}
           height={300}
           layout="responsive"
-          className="my-4"
+          className="my-4 !w-[1000px]"
         />
         <h3 className="font-medium text-lg my-2">Tempo de validade do token</h3>
         <p>O token é válido por uma hora, após sua criação</p>
@@ -114,7 +114,7 @@ export default function Verzo() {
           width={500}
           height={300}
           layout="responsive"
-          className="my-4"
+          className="my-4 !w-[1000px]"
         />
       </section>
       <section id="mv" className="pt-2">

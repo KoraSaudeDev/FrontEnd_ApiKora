@@ -1,0 +1,84 @@
+{
+	"info": {
+		"_postman_id": "0201926d-329c-4a57-b3f7-b1f6b66cfd0a",
+		"name": "API KORA - DE/PARA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34483369"
+	},
+	"item": [
+		{
+			"name": "De-Para",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"page\": 1, //obrigatório\r\n    \"per_page\": 100 //obrigatório\r\n    // \"SISTEMAORIGEM\": \"1420\", //OPCIONAL\r\n    // \"SISTEMADESTINO\": \"9998\", //OPCIONAL\r\n    // \"IDSISTEMA\": \"MV\", //OPCIONAL\r\n    // \"DOMINIO\": \"MATERIAL\", //OPCIONAL\r\n    // \"VALORORIGEM\": \"12708\", //OPCIONAL\r\n    // \"VALORDESTINO\": \"0010024177\" //OPCIONAL\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.korasaude.com.br/api/depara/",
+					"protocol": "https",
+					"host": [
+						"api",
+						"korasaude",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"depara",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autorização",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"DePara\",\r\n    \"password\": \"HBASUYFBASO\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.korasaude.com.br/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"api",
+						"korasaude",
+						"com",
+						"br"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
