@@ -97,38 +97,42 @@ export default function Header(props: HeaderProps) {
         onClick={onChangeOpenSidebar}
       />
 
-      {usuario &&
-        !usuario.is_admin &&
-        usuario.routes &&
-        !usuario.routes.prefixes.includes("/depara") && (
-          <div className="flex items-center gap-4">
-            {showRoutes && (
-              <Tooltip
-                side="bottom"
-                text="Executar rotas"
-                trigger={
-                  <Link href="/slugs" className="pr-2">
-                    <IoMdPlay className="text-white" size={22} />
-                  </Link>
-                }
-              />
-            )}
-            {showSettings && (
-              <Tooltip
-                side="bottom"
-                text="Configurações"
-                trigger={
-                  <Link
-                    href={`/configuracoes${rotaDeConfiguracao}`}
-                    className="border-r border-r-white pr-4"
-                  >
-                    <IoSettingsOutline className="text-white" size={22} />
-                  </Link>
-                }
-              />
-            )}
-          </div>
+      <div className="flex gap-3">
+      <div className="flex items-center gap-4">
+        {usuario &&
+          !usuario.is_admin &&
+          usuario.routes &&
+          !usuario.routes.prefixes.includes("/depara") && (
+            <>
+              {showRoutes && (
+                <Tooltip
+                  side="bottom"
+                  text="Executar rotas"
+                  trigger={
+                    <Link href="/slugs" className="pr-2">
+                      <IoMdPlay className="text-white" size={22} />
+                    </Link>
+                  }
+                />
+              )}
+            </>
+          )}
+
+        {usuario && usuario.is_admin && showSettings && (
+          <Tooltip
+            side="bottom"
+            text="Configurações"
+            trigger={
+              <Link
+                href={`/configuracoes${rotaDeConfiguracao}`}
+                className="border-r border-r-white pr-4"
+              >
+                <IoSettingsOutline className="text-white" size={22} />
+              </Link>
+            }
+          />
         )}
+      </div>
 
       <div
         className="text-white items-center flex gap-2 mr-4 cursor-pointer"
@@ -136,6 +140,7 @@ export default function Header(props: HeaderProps) {
       >
         Sair
         <MdLogout className="text-white" size={22} />
+      </div>
       </div>
     </header>
   );
