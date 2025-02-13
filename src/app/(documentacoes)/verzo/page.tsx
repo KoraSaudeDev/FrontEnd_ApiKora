@@ -14,10 +14,6 @@ export default function Verzo() {
       redirect("/login");
     }
 
-    if (usuario && usuario?.is_admin === false) {
-      redirect("/404");
-    }
-
     if (
       usuario?.is_admin === false &&
       usuario?.routes &&

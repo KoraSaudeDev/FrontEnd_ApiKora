@@ -29,7 +29,8 @@ export default function Verzo() {
     ) {
       redirect("/404");
     }
-  }, []);
+    
+  }, [usuario]);
 
   return (
     <main className="overflow-auto bg-[#f3f7fc] w-full h-full p-8 scroll-smooth dePara">
