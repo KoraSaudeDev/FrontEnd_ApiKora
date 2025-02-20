@@ -27,6 +27,7 @@ export default function CadastrarSlug() {
     { label: "Inteiro", value: "integer" },
     { label: "String", value: "string" },
     { label: "Boleano", value: "boolean" },
+    { label: "Data e hora", value: "datetime-local" },
   ];
   const parameterTypeBoolean = [
     { label: "Verdadeiro", value: true },
@@ -172,7 +173,7 @@ export default function CadastrarSlug() {
                     placeholder="Selecione um agrupamento"
                     className="w-full"
                     value={grouping.find(
-                      (option:any) => option.value === field.value
+                      (option: any) => option.value === field.value
                     )}
                     onChange={(selectedOption: any) => {
                       field.onChange(
@@ -183,7 +184,6 @@ export default function CadastrarSlug() {
                 )}
               />
             )}
-
           </div>
         </div>
         <div className="flex gap-4 mt-4">
@@ -296,6 +296,30 @@ export default function CadastrarSlug() {
                         updatedParameters[index] = {
                           ...updatedParameters[index],
                           value: Number(value.target.value),
+                        };
+
+                        setParameters(updatedParameters);
+                      }}
+                    />
+                  </div>
+                )}
+
+                {parameter.type === "datetime-local" && (
+                  <div className="w-full flex flex-col gap-1">
+                    <label className="text-[#3e4676] text-sm font-medium">
+                      Valor 
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
+                      value={parameter.value || ""}
+                      onChange={(value) => {
+                        console.log(value.target.value)
+                        const updatedParameters = [...parameters];
+
+                        updatedParameters[index] = {
+                          ...updatedParameters[index],
+                          value: value.target.value,
                         };
 
                         setParameters(updatedParameters);

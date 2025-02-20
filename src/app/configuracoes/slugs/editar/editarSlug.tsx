@@ -5,7 +5,7 @@ import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
 import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
-import {  useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Select from "react-select";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
@@ -34,6 +34,7 @@ export default function EditarSlug(props: EditarSlugProps) {
     { label: "Inteiro", value: "integer" },
     { label: "String", value: "string" },
     { label: "Boleano", value: "boolean" },
+    { label: "Data e hora", value: "datetime-local" },
   ];
   const parameterTypeBoolean = [
     { label: "Verdadeiro", value: true },
@@ -141,19 +142,17 @@ export default function EditarSlug(props: EditarSlugProps) {
       .then((res) => {
         const connection = res.data.route;
         setValue("name", connection.name);
-        setValue("query",connection.query.replace(":", "@") )
-        setParameters(connection.parameters)
-        if(connection.systems.length > 0) {
+        setValue("query", connection.query.replace(":", "@"));
+        setParameters(connection.parameters);
+        if (connection.systems.length > 0) {
           setValue("system_id", connection.systems[0].id);
         }
-     
 
         const transformedIds = connection.connections.map(
-            (item: { id: string }) => item.id
-          );
+          (item: { id: string }) => item.id
+        );
 
-          setValue("connection_ids",transformedIds )
-
+        setValue("connection_ids", transformedIds);
       })
       .catch(() => console.log("Não foi possivel buscar as slugs"));
   };
@@ -161,7 +160,7 @@ export default function EditarSlug(props: EditarSlugProps) {
   useEffect(() => {
     handleGetGrouping();
     handleGetConnections();
-    handleGetConnection()
+    handleGetConnection();
   }, []);
 
   return (
@@ -277,9 +276,7 @@ export default function EditarSlug(props: EditarSlugProps) {
               )}
             />
             {errors.query?.type === "required" && (
-              <p className="text-xs text-red-600 mt-1">
-                A query é obrigatória
-              </p>
+              <p className="text-xs text-red-600 mt-1">A query é obrigatória</p>
             )}
           </div>
         </div>
@@ -328,6 +325,29 @@ export default function EditarSlug(props: EditarSlugProps) {
                         updatedParameters[index] = {
                           ...updatedParameters[index],
                           value: Number(value.target.value),
+                        };
+
+                        setParameters(updatedParameters);
+                      }}
+                    />
+                  </div>
+                )}
+
+                {parameter.type === "datetime-local" && (
+                  <div className="w-full flex flex-col gap-1">
+                    <label className="text-[#3e4676] text-sm font-medium">
+                      Valor
+                    </label>
+                    <input
+                      type="datetime-local"
+                      className="border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
+                      value={parameter.value || ""}
+                      onChange={(value) => {
+                        const updatedParameters = [...parameters];
+
+                        updatedParameters[index] = {
+                          ...updatedParameters[index],
+                          value: value.target.value,
                         };
 
                         setParameters(updatedParameters);
