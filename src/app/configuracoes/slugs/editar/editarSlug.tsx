@@ -231,6 +231,7 @@ export default function EditarSlug(props: EditarSlugProps) {
                     isClearable
                     isMulti
                     styles={customStyles}
+                    closeMenuOnSelect={false}
                     placeholder="Selecione as conexões"
                     className="w-full"
                     onChange={(selectedOptions: any) => {

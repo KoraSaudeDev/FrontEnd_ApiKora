@@ -4,7 +4,7 @@ import { StylesConfig } from "react-select";
     control: (provided, state) => ({
       ...provided,
       minHeight: 36,
-      height: 36,
+      height: "100%",
       borderColor: state.isFocused ? "#007aff" : "#ddd",
       boxShadow: state.isFocused ? "0 0 0 1px #007aff" : "none",
       fontFamily: "Arial, sans-serif",

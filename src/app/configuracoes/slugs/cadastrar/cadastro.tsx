@@ -205,6 +205,7 @@ export default function CadastrarSlug() {
                     styles={customStyles}
                     placeholder="Selecione um agrupamento"
                     className="w-full"
+                    closeMenuOnSelect={false}
                     onChange={(selectedOptions: any) => {
                       const values = selectedOptions
                         ? selectedOptions.map((option: any) => option.value)
