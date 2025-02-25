@@ -1,4 +1,4 @@
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import Image from "next/image";
@@ -6,8 +6,8 @@ import { api } from "@/lib/axios";
 import { alert } from "@/hooks/use-alert";
 import { customStyles } from "@/lib/StyleSelect/StyleSelect";
 
-const ReactJson = dynamic(() => import('react-json-view'), { ssr: false });
-const Select = dynamic(() => import('react-select'), { ssr: false });
+const ReactJson = dynamic(() => import("react-json-view"), { ssr: false });
+const Select = dynamic(() => import("react-select"), { ssr: false });
 
 type ExecutarQueryProps = {
   idQuery: number | null;
@@ -21,6 +21,8 @@ export default function ExecutarQuery(props: ExecutarQueryProps) {
   const [parameters, setParameters] = useState<any>([]);
   const [isClient, setIsClient] = useState(false); // Garantir execução no cliente
 
+  const [values, setValues] = useState<any>(null)
+
   const { idQuery } = props;
 
   const parameterTypeBoolean = [
@@ -28,12 +30,14 @@ export default function ExecutarQuery(props: ExecutarQueryProps) {
     { label: "Falso", value: false },
   ];
 
-  const { handleSubmit, control, setValue } = useForm();
+  const { handleSubmit, control, setValue, watch } = useForm();
+
+  const connectionsActive = watch("connections");
 
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     const dados = {
-      parameters: parameters,
+      parameters: values,
       ...data,
     };
 
@@ -60,6 +64,8 @@ export default function ExecutarQuery(props: ExecutarQueryProps) {
       const transformedIds = data.data.route.connections.map(
         (item: { slug: string }) => item.slug
       );
+
+      console.log(transformedIds);
       setValue("connections", transformedIds);
       setSlug(data.data.route.slug);
       setParameters(data.data.route.parameters);
@@ -81,6 +87,18 @@ export default function ExecutarQuery(props: ExecutarQueryProps) {
   };
 
   useEffect(() => {
+    const resultado =connectionsActive && connectionsActive.map((nome:any) => {
+      const objeto = {} as any;
+      parameters.forEach((param: any) => {
+        objeto[param.name] = param.value; // Usando o nome do parâmetro como chave e o valor como valor
+      });
+      return { [nome]: objeto }; // Retorna o objeto no formato desejado
+    });
+
+    setValues(resultado)
+  }, [connectionsActive, parameters])
+
+  useEffect(() => {
     setIsClient(true); // Definir que o componente foi montado no cliente
     handleGetParametersAndSlug();
     handleGetConnections();
@@ -100,67 +118,80 @@ export default function ExecutarQuery(props: ExecutarQueryProps) {
         {parameters.length > 0 && (
           <div>
             <h2 className="mb-4">Parâmetros</h2>
-            {parameters.map((parameter: any, index: any) => {
-              return (
-                <div key={index} className="flex flex-col gap-1 w-1/2 mb-4">
-                  <label className="text-[#3e4676] text-sm font-medium">
-                    {parameter.name}
-                  </label>
-                  {parameter.type === "boolean" && (
-                    <Select
-                      options={parameterTypeBoolean}
-                      isClearable
-                      styles={customStyles}
-                      placeholder="Selecione tipo"
-                      className="w-full"
-                      onChange={(selectedOptions: any) => {
-                        const updatedParameters = [...parameters];
-                        updatedParameters[index] = {
-                          ...updatedParameters[index],
-                          value: selectedOptions.value,
-                        };
+            {connectionsActive &&
+              connectionsActive.map((item:string, itemIndex:number) => (
+                <>
+                   <h3>Parametro do banco - {item}</h3>
+                   <div key={itemIndex}>
+                  {parameters.map((parameter: any, index: any) => (
+                  <>
+                 
+                      <div key={index} className="flex flex-col gap-1 w-1/2 mb-4">
+                      <label className="text-[#3e4676] text-sm font-medium">
+                        {parameter.name}
+                      </label>
+                      {parameter.type === "boolean" && (
+                        <Select
+                          options={parameterTypeBoolean}
+                          isClearable
+                          styles={customStyles}
+                          placeholder="Selecione tipo"
+                          className="w-full"
+                          onChange={(selectedOptions: any) => {
+                            setValues((prevArray: any) => {
+                              const novoArray = [...prevArray];
 
-                        setParameters(updatedParameters);
-                      }}
-                    />
-                  )}
+                              novoArray[itemIndex][item][parameter.name] = selectedOptions.value;
+                              
+                              return novoArray;
+                            });
 
-                  {parameter.type === "string" && (
-                    <input
-                      value={parameter.value}
-                      onChange={(e: any) => {
-                        const updatedParameters = [...parameters];
-                        updatedParameters[index] = {
-                          ...updatedParameters[index],
-                          value: e.target.value,
-                        };
+                          }}
+                        />
+                      )}
 
-                        setParameters(updatedParameters);
-                      }}
-                      type="text"
-                      className="w-full border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
-                    />
-                  )}
+                      {parameter.type === "string" && (
+                        <input
+                          value={parameter.value}
+                          onChange={(e: any) => {
+                            setValues((prevArray: any) => {
+                              const novoArray = [...prevArray];
 
-                  {parameter.type === "integer" && (
-                    <input
-                      type="number"
-                      className="w-full border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
-                      value={parameter.value}
-                      onChange={(e: any) => {
-                        const updatedParameters = [...parameters];
-                        updatedParameters[index] = {
-                          ...updatedParameters[index],
-                          value: e.target.value,
-                        };
+                              novoArray[itemIndex][item][parameter.name] = e.target.value;
+                              
+                              return novoArray;
+                            });
+                          }}
+                          type="text"
+                          className="w-full border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
+                        />
+                      )}
 
-                        setParameters(updatedParameters);
-                      }}
-                    />
-                  )}
+                      {parameter.type === "integer" && (
+                        <input
+                          type="number"
+                          className="w-full border border-[#ddd] rounded px-2 py-[5px] focus-visible:outline-none focus-visible:border-[#007aff]"
+                          value={parameter.value}
+                          onChange={(e: any) => {
+                            setValues((prevArray: any) => {
+                              const novoArray = [...prevArray];
+
+                              novoArray[itemIndex][item][parameter.name] = e.target.value;
+                              
+                              return novoArray;
+                            });
+                          }}
+                        />
+                      )}
+                    </div>
+                  </>
+                  ))}
                 </div>
-              );
-            })}
+                
+                </>
+               
+              ))}
+
             <div className="w-1/2 flex flex-col gap-1">
               <label className="text-[#3e4676] text-sm font-medium">
                 Conexões
