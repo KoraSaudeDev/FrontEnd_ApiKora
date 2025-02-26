@@ -139,6 +139,7 @@ export default function CadastrarAcesso() {
                       styles={customStyles}
                       placeholder="Selecione as conexões"
                       className="w-full"
+                      closeMenuOnSelect={false}
                       onChange={(selectedOptions: any) => {
                         const values = selectedOptions
                           ? selectedOptions.map((option: any) => option.value)

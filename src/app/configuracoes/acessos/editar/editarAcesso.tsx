@@ -159,6 +159,7 @@ export default function EditarAcesso(props: EditarAcessoProps) {
                       isClearable
                       isMulti
                       styles={customStyles}
+                      closeMenuOnSelect={false}
                       placeholder="Selecione as conexões"
                       className="w-full"
                       onChange={(selectedOptions: any) => {
