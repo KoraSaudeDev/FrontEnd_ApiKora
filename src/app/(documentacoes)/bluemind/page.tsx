@@ -158,10 +158,9 @@ export default function Verzo() {
     }
 
     if (
-      usuario &&
       usuario?.is_admin === false &&
       usuario?.routes &&
-      !usuario.routes.prefixes.includes("/depara")
+      !usuario.routes.prefixes.includes("/bluemind")
     ) {
       redirect("/404");
     }

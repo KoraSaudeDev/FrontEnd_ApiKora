@@ -82,7 +82,33 @@ export default function Sidebar(props: SidebarProps) {
             ],
           },
         ]);
-      } else if (
+
+      } 
+      else if (
+        !usuario.is_admin &&
+        usuario.routes &&
+        usuario.routes.prefixes.includes("/bluemind")
+      ) {
+        return setItems([
+          {
+            item: "Bluemind",
+            children: [
+              { label: "Sobre", path: "/bluemind#sobre", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/bluemind#autenticacao",
+                isShow: true,
+              },
+              { label: "Uso TASY",   path: "/bluemind#uso-tasy", isShow: true },
+              { label: "Uso MV",   path: "/bluemind#uso-mv", isShow: true },
+              { label: "Exemplos", path: "/bluemind#exemplos", isShow: true },
+            ],
+          }
+        ]);
+
+      } 
+      
+      else if (
         !usuario.is_admin &&
         usuario.routes &&
         usuario.routes.prefixes.includes("/depara")

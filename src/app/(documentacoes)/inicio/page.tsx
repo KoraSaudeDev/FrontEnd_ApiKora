@@ -59,6 +59,22 @@ export default function Inicio() {
 
       {!usuario?.is_admin &&
         usuario?.accesses &&
+        usuario?.routes.prefixes.includes("/bluemind") && (
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-2xl">
+              Clique no link abaixo para acessar a documentação completa!
+            </p>
+            <Link
+              href="/bluemind#sobre"
+              className="w-fit bg-[#3e4676] text-white rounded hover:opacity-75 transition-all border-none py-2 px-7 text-lg font-medium m-auto mt-4"
+            >
+              Acessar
+            </Link>
+          </div>
+        )}
+
+      {!usuario?.is_admin &&
+        usuario?.accesses &&
         usuario?.routes.prefixes.includes("/depara") && (
           <div className="flex flex-col items-center gap-4">
             <p className="text-2xl">
@@ -73,19 +89,18 @@ export default function Inicio() {
           </div>
         )}
 
-{
-  !usuario?.is_admin &&
-  usuario?.routes &&
-  (!usuario?.routes.prefixes.includes("/verzo") && !usuario?.routes.prefixes.includes("/depara")) && (
-    <div className="flex flex-col items-center gap-4">
-      <p className="text-2xl">
-        Desculpe, mas não há nenhuma documentação disponível para você!
-      </p>
-      <FaRegSadCry size={150} />
-    </div>
-  )
-}
-
+      {!usuario?.is_admin &&
+        usuario?.routes &&
+        !usuario?.routes.prefixes.includes("/verzo") &&
+        !usuario?.routes.prefixes.includes("/depara") &&
+        !usuario?.routes.prefixes.includes("/bluemind") && (
+          <div className="flex flex-col items-center gap-4">
+            <p className="text-2xl">
+              Desculpe, mas não há nenhuma documentação disponível para você!
+            </p>
+            <FaRegSadCry size={150} />
+          </div>
+        )}
     </div>
   );
 }
