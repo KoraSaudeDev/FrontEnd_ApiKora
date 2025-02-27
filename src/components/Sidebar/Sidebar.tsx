@@ -33,6 +33,33 @@ export default function Sidebar(props: SidebarProps) {
               { label: "Tasy", path: "/verzo#tasy", isShow: true },
             ],
           },
+          {
+            item: "DePara",
+            children: [
+              { label: "Sobre", path: "/dePara#sobre", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/dePara#autenticacao",
+                isShow: true,
+              },
+              { label: "Uso",   path: "/dePara#uso", isShow: true },
+              { label: "Exemplos", path: "/dePara#exemplos", isShow: true },
+            ],
+          },
+          {
+            item: "Bluemind",
+            children: [
+              { label: "Sobre", path: "/bluemind#sobre", isShow: true },
+              {
+                label: "Autenticação",
+                path: "/bluemind#autenticacao",
+                isShow: true,
+              },
+              { label: "Uso TASY",   path: "/bluemind#uso-tasy", isShow: true },
+              { label: "Uso MV",   path: "/bluemind#uso-mv", isShow: true },
+              { label: "Exemplos", path: "/bluemind#exemplos", isShow: true },
+            ],
+          },
         ]);
       } else if (
         !usuario.is_admin &&
@@ -112,7 +139,7 @@ export default function Sidebar(props: SidebarProps) {
         </div>
         <p className="text-gray-800">Documentações</p>
       </div>
-      <Accordion items={items} defaultValue="DePara" isHash />
+      <Accordion items={items} defaultValue="" isHash />
       {/* {(usuario?.is_admin || (usuario?.routes?.slugs?.length ?? 0) > 0) && (
         <Link
           href="/slugs"

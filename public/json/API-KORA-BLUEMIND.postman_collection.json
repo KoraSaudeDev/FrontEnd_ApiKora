@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "06f794a8-69df-4e0b-a3d0-19555edaf7c0",
+		"name": "Documentação Bluemind",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17371828"
+	},
+	"item": [
+		{
+			"name": "Rotas",
+			"item": [
+				{
+					"name": "executando rota",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"parameters\": {\r\n        \"HSMC - Homolog\": {\r\n            \"NR_SEQUENCIA\": \"15\",\r\n            \"CD_CONVENIO\": \"12\",\r\n            \"CD_MATERIAL_CONVENIO\": \"1\",\r\n            \"DT_ATUALIZACAO\": \"2025-02-21 12:44:06\",\r\n            \"NM_USUARIO\": \"teste api\",\r\n            \"IE_SITUACAO\": \"A\"\r\n        },\r\n        \"São francisco - Homolog - Bluemind\": {\r\n            \"NR_SEQUENCIA\": \"20\",\r\n            \"CD_CONVENIO\": \"18\",\r\n            \"CD_MATERIAL_CONVENIO\": \"5\",\r\n            \"DT_ATUALIZACAO\": \"2025-02-21 12:44:06\",\r\n            \"NM_USUARIO\": \"teste api\",\r\n            \"IE_SITUACAO\": \"A\"\r\n        }\r\n    },\r\n    \"connections\": [\"HSMC - Homolog\", \"São francisco - Homolog - Bluemind\"]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/routes/execute/:slug",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"routes",
+								"execute",
+								":slug"
+							],
+							"variable": [
+								{
+									"key": "slug",
+									"value": "teste___bluemind"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"hugo\",\r\n    \"password\": \"3XIoVdlz2v71\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Conexões",
+			"item": [
+				{
+					"name": "Listando conexões simples",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/connections/list-simple",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"connections",
+								"list-simple"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
