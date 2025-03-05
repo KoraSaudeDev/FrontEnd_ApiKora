@@ -89,7 +89,7 @@ export default function Header(props: HeaderProps) {
     <header
       className={`${
         openSidebar ? "w-[calc(100%-230px)]" : "w-full "
-      } h-16 bg-[#284557] flex items-center justify-between px-4 ml-auto fixed right-0 z-[99999]`}
+      } h-16 bg-[#284557] flex items-center justify-between px-4 ml-auto fixed right-0 z-[700]`}
     >
       <IoReorderThreeOutline
         className="text-white cursor-pointer"

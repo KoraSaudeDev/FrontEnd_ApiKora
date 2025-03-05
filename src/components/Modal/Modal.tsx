@@ -15,7 +15,7 @@ type Modal = {
   
     return (
       <div
-        className={`fixed inset-0 bg-[#00000080] flex justify-center items-center ${className}`}
+        className={`fixed inset-0 bg-[#00000080] flex justify-center items-center ${className} z-[999]`}
         onClick={onClose}
       >
         <div
