@@ -20,8 +20,10 @@ export default function Verzo() {
   const bluemindTasyTabs = [
     "bluemind_tasy_tab10",
     "bluemind_tasy_tab11",
+    "bluemind_tasy_tab12",
     "bluemind_tasy_tab13_1",
     "bluemind_tasy_tab14",
+    "bluemind_tasy_tab14_1",
     "bluemind_tasy_tab15",
     "bluemind_tasy_tab16",
     "bluemind_tasy_tab17",
@@ -44,7 +46,7 @@ export default function Verzo() {
     "bluemind_tasy_tab35",
     "bluemind_tasy_tab36",
     "bluemind_tasy_tab37",
-    "bluemind_tasy_tab38",
+    "bluemind_tasy_tab38"
   ];
 
   const bluemindMvTabs = [
@@ -58,13 +60,20 @@ export default function Verzo() {
     "bluemind_mv_tab30",
     "bluemind_mv_tab31_1",
     "bluemind_mv_tab31_2",
-    "bluemind_mv_tab32_1",
+    "bluemind_mv_tab32",
     "bluemind_mv_tab32_2",
     "bluemind_mv_tab33",
+    "bluemind_mv_tab33_2",
     "bluemind_mv_tab35",
     "bluemind_mv_tab37",
     "bluemind_mv_tab38",
+    "bluemind_mv_tab39",
+    "bluemind_mv_tab39_2",
+    "bluemind_mv_tab39_3",
+    "bluemind_mv_tab39_4",
+    "bluemind_mv_tab39_5",
     "bluemind_mv_tab40",
+    "bluemind_mv_tab41",
     "bluemind_mv_tab42",
     "bluemind_mv_tab43",
     "bluemind_mv_tab44",
@@ -72,19 +81,31 @@ export default function Verzo() {
     "bluemind_mv_tab47",
     "bluemind_mv_tab48",
     "bluemind_mv_tab49",
+    "bluemind_mv_tab50",
     "bluemind_mv_tab51",
     "bluemind_mv_tab52",
     "bluemind_mv_tab53",
     "bluemind_mv_tab54",
-    "bluemind_mv_tab55_1",
+    "bluemind_mv_tab55",
     "bluemind_mv_tab55_2",
     "bluemind_mv_tab55_3",
     "bluemind_mv_tab55_4",
     "bluemind_mv_tab56",
+    "bluemind_mv_tab57",
     "bluemind_mv_tab57_2",
+    "bluemind_mv_tab57_3",
+    "bluemind_mv_tab57_4",
+    "bluemind_mv_tab57_5",
+    "bluemind_mv_tab57_6",
+    "bluemind_mv_tab57_7",
+    "bluemind_mv_tab57_8",
+    "bluemind_mv_tab57_9",
+    "bluemind_mv_tab57_10",
+    "bluemind_mv_tab57_11",
     "bluemind_mv_tab58",
     "bluemind_mv_tab59",
     "bluemind_mv_tab59_2",
+    "bluemind_mv_tab60",
     "bluemind_mv_tab61",
     "bluemind_mv_tab62",
     "bluemind_mv_tab63",
@@ -108,14 +129,17 @@ export default function Verzo() {
     "bluemind_mv_tab81",
     "bluemind_mv_tab82",
     "bluemind_mv_tab83",
+    "bluemind_mv_tab84",
     "bluemind_mv_tab85",
     "bluemind_mv_tab86",
     "bluemind_mv_tab87",
     "bluemind_mv_tab88",
     "bluemind_mv_tab89",
     "bluemind_mv_tab92",
-    "bluemind_mv_tab93",
     "bluemind_mv_tab94",
+    "bluemind_mv_tab95",
+    "bluemind_mv_tab95_2",
+    "bluemind_mv_tab95_3",
     "bluemind_mv_tab96",
     "bluemind_mv_tab97",
     "bluemind_mv_tab98",
@@ -124,33 +148,213 @@ export default function Verzo() {
     "bluemind_mv_tab101_3",
     "bluemind_mv_tab102",
     "bluemind_mv_tab103",
+    "bluemind_mv_tab104",
+    "bluemind_mv_tab104_2",
     "bluemind_mv_tab104_3",
-    "bluemind_mv_tab105",
     "bluemind_mv_tab106",
     "bluemind_mv_tab107",
     "bluemind_mv_tab108",
+    "bluemind_mv_tab109",
     "bluemind_mv_tab110",
     "bluemind_mv_tab111",
     "bluemind_mv_tab112",
     "bluemind_mv_tab113",
     "bluemind_mv_tab114",
     "bluemind_mv_tab115",
+    "bluemind_mv_tab116",
     "bluemind_mv_tab117",
     "bluemind_mv_tab118",
     "bluemind_mv_tab119",
     "bluemind_mv_tab120",
-    "bluemind_mv_tab126_1",
+    "bluemind_mv_tab126",
     "bluemind_mv_tab126_2",
     "bluemind_mv_tab126_3",
     "bluemind_mv_tab126_4",
     "bluemind_mv_tab126_5",
     "bluemind_mv_tab126_6",
+    "bluemind_mv_tab126_7",
     "bluemind_mv_tab126_8",
     "bluemind_mv_tab126_9",
     "bluemind_mv_tab126_10",
     "bluemind_mv_tab126_11",
-    "bluemind_mv_tab126_12",
+    "bluemind_mv_tab932",
+    "bluemindmvtab57_5"
   ];
+
+  const conexoes = [
+    {
+      Id: 1,
+      Empresa: "HOSPITAL MERIDIONAL CARIACICA S.A",
+      CNPJ: "00.625.711/0001-51",
+      HIS: "MV",
+      Versao: "MV2000",
+      SlugHomologacao: "hmc__mv__bluemind__homolog",
+      SlugProducao: "mvhmc__bluemind_prod",
+      Observacao: "---"
+    },
+    {
+      Id: 2,
+      Empresa: "HOSPITAL METROPOLITANO S/A",
+      CNPJ: "32.402.414/0001-33",
+      HIS: "MV",
+      Versao: "MV2000",
+      SlugHomologacao: "hms__mv__bluemind__homolog",
+      SlugProducao: "mv_hms__bluemind_prod",
+      Observacao: "---"
+    },
+    {
+      Id: 3,
+      Empresa: "HOSPITAL SAO LUIZ S/A",
+      CNPJ: "27.569.847/0001-48",
+      HIS: "MV",
+      Versao: "MV2000",
+      SlugHomologacao: "hsl__mv__bluemind__homolog",
+      SlugProducao: "mvhsl_bluemind_prod",
+      Observacao: "---"
+    },
+    {
+      Id: 4,
+      Empresa: "HOSPITAL PRAIA DA COSTA S/A",
+      CNPJ: "39.298.922/0001-62",
+      HIS: "MV",
+      Versao: "MV2000",
+      SlugHomologacao: "hpc__mv__bluemind__homolog",
+      SlugProducao: "mvhpc__bluemind_prod",
+      Observacao: "---"
+    },
+    {
+      Id: 5,
+      Empresa: "HOSPITAL E MATERNIDADE SAO FRANCISCO DE ASSIS S/A",
+      CNPJ: "30.779.649/0001-13",
+      HIS: "MV",
+      Versao: "MV2000",
+      SlugHomologacao: "sao_francisco__homolog__bluemind",
+      SlugProducao: "mvhsf__bluemind_prod",
+      Observacao: "---"
+    },
+    {
+      Id: 6,
+      Empresa: "MATERNIDADE SANTA URSULA DE VITORIA LTDA",
+      CNPJ: "27.434.992/0001-11",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "hmsm__mv__bluemind__homolog",
+      SlugProducao: "hmsm__mv__bluemind__prod",
+      Observacao: "multi empresa HMSM ID 1 HMV ID 2"
+    },
+    {
+      Id: 7,
+      Empresa: "HOSPITAL MERIDIONAL SAO MATEUS S.A",
+      CNPJ: "10.427.478/0001-56",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "hmsm__mv__bluemind__homolog",
+      SlugProducao: "hmsm__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 8,
+      Empresa: "HOSPITAL ANCHIETA S.A",
+      CNPJ: "02.560.878/0001-07",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "ha__mv__bluemind__homolog",
+      SlugProducao: "ha__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 9,
+      Empresa: "SERVICOS HOSPITALARES YUGE S.A",
+      CNPJ: "72.576.143/0001-57",
+      HIS: "TASY",
+      Versao: "TASY",
+      SlugHomologacao: "hsfb_tasy__bluemind__homolog",
+      SlugProducao: "hsfb__tasy__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 10,
+      Empresa: "HOSPITAL ENCORE LTDA",
+      CNPJ: "26.878.439/0001-05",
+      HIS: "TASY",
+      Versao: "TASY",
+      SlugHomologacao: "encore__tasy__bluemind__homolog",
+      SlugProducao: "tasy__encore_prod_bluemind",
+      Observacao: "---"
+    },
+    {
+      Id: 11,
+      Empresa: "INSTITUTO DE NEUROLOGIA DE GOIANIA LTDA",
+      CNPJ: "01.011.865/0001-16",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "ingoto__mv__bluemind__homolog",
+      SlugProducao: "ingoto__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 12,
+      Empresa: "HOSPITAL SAO MATEUS LTDA FORTALEZA",
+      CNPJ: "41.580.077/0001-65",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "ingoto__mv__bluemind__homolog",
+      SlugProducao: "ingoto__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 13,
+      Empresa: "HOSPITAL GASTROCLINICA",
+      CNPJ: "07.272.404/0001-83",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "ingoto__mv__bluemind__homolog",
+      SlugProducao: "ingoto__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 14,
+      Empresa: "HOSPITAL GASTROCLINICA",
+      CNPJ: "23.443.518/0001-03",
+      HIS: "MV",
+      Versao: "MVSOUL",
+      SlugHomologacao: "ingoto__mv__bluemind__homolog",
+      SlugProducao: "ingoto__mv__bluemind__prod",
+      Observacao: "---"
+    },
+    {
+      Id: 15,
+      Empresa: "HOSPITAL E MATERNIDADE SAO MATEUS CUIABÁ",
+      CNPJ: "15.016.827/0001-60",
+      HIS: "TASY",
+      Versao: "TASY",
+      SlugHomologacao: "hsmc__homolog",
+      SlugProducao: "tasy__hsmc__prod_bluemind",
+      Observacao: "---"
+    },
+    {
+      Id: 16,
+      Empresa: "HOSPITAL PALMAS MEDICAL S.A",
+      CNPJ: "12.955.953/0001-92",
+      HIS: "TASY",
+      Versao: "TASY",
+      SlugHomologacao: "hpm__tasy__bluemind__homolog",
+      SlugProducao: "tasy__hpm__prod_bluemind",
+      Observacao: "---"
+    },
+    {
+      Id: 17,
+      Empresa: "SOCIEDADE HOSPITALAR SANTA THEREZA LTDA",
+      CNPJ: "25.016.319/0001-36",
+      HIS: "TASY",
+      Versao: "TASY",
+      SlugHomologacao: "hpm__tasy__bluemind__homolog",
+      SlugProducao: "tasy__hpm__prod_bluemind",
+      Observacao: "---"
+    }
+  ];
+  
+  
 
   useEffect(() => {
     if (!getCookies("user")) {
@@ -292,6 +496,39 @@ export default function Verzo() {
             <hr className="my-2" />
           </section>
         </div>
+      </section>
+
+      <section id="conexoes" className="py-2">
+      <h3 className="my-2 font-semibold text-lg">Lista completa das conexões</h3>
+      <table cellPadding="10" className="border bg-white">
+        <thead className="bg-slate-200 text-xs">
+          <tr>
+            <th>ID</th>
+            <th>Empresa</th>
+            <th>CNPJ</th>
+            <th>HIS</th>
+            <th>Versão</th>
+            <th>Slug Homologação</th>
+            <th>Slug Produção</th>
+            <th>Observação</th>
+          </tr>
+        </thead>
+        <tbody>
+          {conexoes.map((conexao) => (
+            <tr key={conexao.Id} className="border text-xs text-center">
+              <td>{conexao.Id}</td>
+              <td>{conexao.Empresa}</td>
+              <td>{conexao.CNPJ}</td>
+              <td>{conexao.HIS}</td>
+              <td>{conexao.Versao}</td>
+              <td>{conexao.SlugHomologacao}</td>
+              <td>{conexao.SlugProducao}</td>
+              <td>{conexao.Observacao}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
       </section>
 
       <section id="uso-tasy">
