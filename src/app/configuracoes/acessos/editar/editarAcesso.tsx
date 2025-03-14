@@ -28,6 +28,7 @@ export default function EditarAcesso(props: EditarAcessoProps) {
   const routesPrefixOptions = [
     { label: "/verzo", value: "/verzo" },
     { label: "/depara", value: "/depara" },
+    { label: "/ticket", value: "/ticket" },
     { label: "/bluemind", value: "/bluemind" },
     { label: "/rotas", value: "/routes" },
     { label: "/conexoes", value: "/connections" },
